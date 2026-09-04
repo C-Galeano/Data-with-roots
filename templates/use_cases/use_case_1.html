@@ -1,11 +1,528 @@
 {% extends "base.html" %}
-{% from "_macros.html" import placeholder_section %}
 
-{% block title %}Use Case 1{% endblock %}
+{% block title %}Case 1 - House Price Prediction{% endblock %}
 
 {% block content %}
-{{ placeholder_section(
-    "Use Case 1",
-    "A real-world scenario where Machine Learning is applied."
-) }}
+
+<!-- Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <span class="badge bg-primary mb-3">
+            USE CASE 1
+        </span>
+
+        <h1 class="display-5 fw-bold">
+            House Price Prediction
+        </h1>
+
+        <p class="lead text-muted">
+            Using Supervised Learning to estimate the price of a property
+        </p>
+
+    </div>
+</section>
+
+
+<!-- Problem Context -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-3">
+            Problem Context
+        </h2>
+
+        <p class="text-muted">
+            The price of a house can depend on several characteristics,
+            such as its size, location, number of bedrooms, number of
+            bathrooms, and age of the property.
+        </p>
+
+        <p class="text-muted">
+            Estimating the value of a property manually can be difficult
+            because many different factors can influence its price.
+        </p>
+
+        <p class="text-muted">
+            Machine Learning can analyze historical housing data and learn
+            the relationship between the characteristics of a property
+            and its actual selling price.
+        </p>
+
+    </div>
+</section>
+
+
+<!-- Objective -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-3">
+            Objective
+        </h2>
+
+        <p class="text-muted">
+            The objective is to estimate the approximate selling price of
+            a house based on its characteristics and historical housing data.
+        </p>
+
+        <div class="card border-0 shadow-sm mt-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold">
+                    Main Question
+                </h5>
+
+                <p class="mb-0">
+                    What could be the approximate price of this house?
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Data -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            Data That Could Be Used
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            House Area
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The size of the property measured in square meters.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Bedrooms
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Number of bedrooms available in the property.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Bathrooms
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Number of bathrooms in the property.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Location
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Geographic location or area where the property is located.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Property Age
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Number of years since the property was built.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Historical Price
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Previous selling prices of similar properties.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- How Machine Learning Works -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            How Does Machine Learning Work in This Case?
+        </h2>
+
+        <div class="row g-4">
+
+            <!-- Step 1 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            01
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Data Collection
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Historical information about houses and their
+                            selling prices is collected.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            02
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Model Training
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The model learns the relationship between house
+                            characteristics and their known selling prices.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            03
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Price Prediction
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The trained model uses the characteristics of a
+                            new house to estimate its potential price.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ML Type and Problem Type -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- ML Type -->
+            <div class="col-md-6">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            MACHINE LEARNING TYPE
+                        </span>
+
+                        <h3 class="fw-bold">
+                            Supervised Learning
+                        </h3>
+
+                        <p class="text-muted">
+                            Supervised Learning uses training data that contains
+                            known answers. In this case, the model receives
+                            information about houses together with their actual
+                            selling prices.
+                        </p>
+
+                        <div class="alert alert-primary mt-4">
+
+                            <strong>Key Idea:</strong>
+                            The model learns from historical examples where
+                            the correct result is already known.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Problem Type -->
+            <div class="col-md-6">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            PROBLEM TYPE
+                        </span>
+
+                        <h3 class="fw-bold">
+                            Regression
+                        </h3>
+
+                        <p class="text-muted">
+                            Regression is used when the model needs to predict
+                            a numerical value. Here, the output is the estimated
+                            price of a property.
+                        </p>
+
+                        <div class="alert alert-primary mt-4">
+
+                            <strong>Possible Output:</strong>
+                            Estimated House Price
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Benefits -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            Potential Benefits
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Estimate Property Values
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Provide an estimated value for properties based
+                            on their characteristics.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Analyze Historical Data
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Use previous property sales to identify useful
+                            relationships between different variables.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Identify Relationships
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Discover how factors such as area, location,
+                            and property characteristics can affect price.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Support Decisions
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Help buyers, sellers, and real estate businesses
+                            make more informed decisions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Summary -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4">
+
+                <h2 class="fw-bold mb-3">
+                    Case Summary
+                </h2>
+
+                <p class="text-muted mb-0">
+                    House Price Prediction uses
+                    <strong>Supervised Learning</strong> to analyze historical
+                    housing data and learn the relationship between property
+                    characteristics and selling prices. The model solves a
+                    <strong>Regression</strong> problem by producing a numerical
+                    estimate of a property's potential price.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
 {% endblock %}
