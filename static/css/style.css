@@ -1,0 +1,64 @@
+/* ==========================================================================
+   Data with Roots - global stylesheet
+   Identity: technology + data (deep blue) rooted in nature (forest green)
+   ========================================================================== */
+
+:root {
+    --dwr-green-dark: #1b4332;
+    --dwr-green: #2d6a4f;
+    --dwr-green-light: #74c69d;
+    --dwr-blue-dark: #10243e;
+    --dwr-blue: #1b263b;
+    --dwr-earth: #a98467;
+    --dwr-cream: #f8f6f1;
+    --dwr-text: #1f2a24;
+}
+
+body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--dwr-text);
+    background-color: var(--dwr-cream);
+}
+
+/* --- Navbar ------------------------------------------------------------ */
+
+.dwr-navbar {
+    background: linear-gradient(90deg, var(--dwr-blue-dark) 0%, var(--dwr-green-dark) 100%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.dwr-brand {
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #fff !important;
+}
+
+.dwr-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500;
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+}
+
+.dwr-navbar .nav-link:hover,
+.dwr-navbar .nav-link.active {
+    color: var(--dwr-green-light) !important;
+}
+
+.dwr-navbar .dropdown-menu {
+    border: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.dwr-navbar .dropdown-item.active,
+.dwr-navbar .dropdown-item:hover {
+    background-color: var(--dwr-green-light);
+    color: var(--dwr-blue-dark);
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+.dwr-footer {
+    background-color: var(--dwr-blue-dark);
+    color: rgba(255, 255, 255, 0.75);
+}
