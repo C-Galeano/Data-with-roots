@@ -1,0 +1,13 @@
+{% macro placeholder_section(title, description) %}
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <span class="badge rounded-pill dwr-section-badge mb-3">Coming Soon</span>
+        <h1 class="fw-bold">{{ title }}</h1>
+        <p class="lead text-muted col-lg-8 mx-auto">{{ description }}</p>
+    </div>
+    <div class="alert dwr-placeholder-alert text-center" role="alert">
+        <i class="bi bi-tools me-2"></i>
+        This section is currently under development by the Data with Roots team. Check back soon!
+    </div>
+</div>
+{% endmacro %}
