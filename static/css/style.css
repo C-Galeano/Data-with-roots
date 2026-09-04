@@ -20,6 +20,18 @@ body {
     background-color: var(--dwr-cream);
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: var(--dwr-blue-dark);
+}
+
+a {
+    color: var(--dwr-green);
+}
+
+a:hover {
+    color: var(--dwr-green-dark);
+}
+
 /* --- Navbar ------------------------------------------------------------ */
 
 .dwr-navbar {
@@ -114,6 +126,20 @@ body {
 
 .dwr-quick-access {
     background-color: #eef2ee;
+}
+
+/* --- Section pages (placeholders and future content) ----------------------- */
+
+.dwr-section-badge {
+    background-color: rgba(45, 106, 79, 0.12);
+    color: var(--dwr-green-dark);
+    font-weight: 500;
+}
+
+.dwr-placeholder-alert {
+    background-color: #fff;
+    border: 1px dashed var(--dwr-earth);
+    color: var(--dwr-text);
 }
 
 /* --- Footer -------------------------------------------------------------- */
