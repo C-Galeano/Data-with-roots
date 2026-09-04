@@ -1,11 +1,416 @@
 {% extends "base.html" %}
-{% from "_macros.html" import placeholder_section %}
 
-{% block title %}Use Case 2{% endblock %}
+{% block title %}Case 2 - Financial Fraud Detection{% endblock %}
 
 {% block content %}
-{{ placeholder_section(
-    "Use Case 2",
-    "A real-world scenario where Machine Learning is applied."
-) }}
+
+<!-- Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <span class="badge bg-primary mb-3">USE CASE 2</span>
+
+        <h1 class="display-5 fw-bold">Financial Fraud Detection</h1>
+
+        <p class="lead text-muted">
+            Using Semi-Supervised Learning to identify potentially fraudulent transactions
+        </p>
+    </div>
+</section>
+
+
+<!-- Problem Context -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-3">Problem Context</h2>
+
+        <p class="text-muted">
+            Financial institutions process millions of transactions every day.
+            Some of these transactions may be fraudulent, but identifying them
+            manually can be difficult and time-consuming.
+        </p>
+
+        <p class="text-muted">
+            In many situations, only a small portion of transactions have been
+            reviewed and labeled as fraudulent or legitimate. The majority of
+            transactions remain unlabeled.
+        </p>
+
+        <p class="text-muted">
+            Machine Learning can use both labeled and unlabeled transactions
+            to discover patterns associated with fraudulent behavior.
+        </p>
+
+    </div>
+</section>
+
+
+<!-- Objective -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-3">Objective</h2>
+
+        <p class="text-muted">
+            The objective is to identify transactions that may be fraudulent
+            using a combination of labeled and unlabeled financial data.
+        </p>
+
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold">Main Question</h5>
+
+                <p class="mb-0">
+                    Is this transaction legitimate or potentially fraudulent?
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Data -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">Data That Could Be Used</h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Transaction Amount</h5>
+                        <p class="text-muted mb-0">
+                            The monetary value of the transaction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Transaction Time</h5>
+                        <p class="text-muted mb-0">
+                            Date and time when the transaction occurred.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Location</h5>
+                        <p class="text-muted mb-0">
+                            Geographic location associated with the transaction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Payment Method</h5>
+                        <p class="text-muted mb-0">
+                            Card, online payment, bank transfer, or other method.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Transaction Frequency</h5>
+                        <p class="text-muted mb-0">
+                            Number of transactions performed during a period.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Transaction History</h5>
+                        <p class="text-muted mb-0">
+                            Previous transaction behavior associated with the account.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- How Machine Learning Works -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            How Does Machine Learning Work in This Case?
+        </h2>
+
+        <div class="row g-4">
+
+            <!-- Step 1 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">01</span>
+
+                        <h5 class="fw-bold">Data Collection</h5>
+
+                        <p class="text-muted mb-0">
+                            The system collects a large number of financial
+                            transactions. Only some transactions have labels
+                            indicating whether they are fraudulent or legitimate.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">02</span>
+
+                        <h5 class="fw-bold">Pattern Learning</h5>
+
+                        <p class="text-muted mb-0">
+                            The model learns from the labeled transactions while
+                            also analyzing patterns and relationships found in
+                            the larger set of unlabeled transactions.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">03</span>
+
+                        <h5 class="fw-bold">Fraud Classification</h5>
+
+                        <p class="text-muted mb-0">
+                            The trained model analyzes new transactions and
+                            classifies them as legitimate or potentially fraudulent.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ML Type and Problem Type -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- ML Type -->
+            <div class="col-md-6">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            MACHINE LEARNING TYPE
+                        </span>
+
+                        <h3 class="fw-bold">
+                            Semi-Supervised Learning
+                        </h3>
+
+                        <p class="text-muted">
+                            Semi-Supervised Learning combines a small amount of
+                            labeled data with a much larger amount of unlabeled data.
+                        </p>
+
+                        <div class="alert alert-primary mt-4">
+                            <strong>Key Idea:</strong>
+                            The model learns from known examples while also
+                            discovering useful patterns in unlabeled data.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Problem Type -->
+            <div class="col-md-6">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            PROBLEM TYPE
+                        </span>
+
+                        <h3 class="fw-bold">
+                            Classification
+                        </h3>
+
+                        <p class="text-muted">
+                            The model assigns transactions to categories based
+                            on the patterns learned from the available data.
+                        </p>
+
+                        <div class="alert alert-primary mt-4">
+                            <strong>Possible Outputs:</strong>
+                            Legitimate / Potentially Fraudulent
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Benefits -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">Potential Benefits</h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Faster Detection
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Analyze large numbers of transactions automatically.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Reduce Financial Losses
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Detect potentially fraudulent transactions earlier.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Use Unlabeled Data
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Take advantage of large amounts of data that have
+                            not been manually classified.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Identify Suspicious Patterns
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Discover behaviors that may indicate fraudulent activity.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Summary -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4">
+
+                <h2 class="fw-bold mb-3">
+                    Case Summary
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Financial Fraud Detection can use
+                    <strong>Semi-Supervised Learning</strong> to analyze a
+                    combination of labeled and unlabeled transaction data.
+                    The model can learn patterns associated with fraudulent
+                    behavior and classify new transactions as
+                    <strong>legitimate</strong> or
+                    <strong>potentially fraudulent</strong>.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
 {% endblock %}

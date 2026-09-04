@@ -1,11 +1,528 @@
 {% extends "base.html" %}
-{% from "_macros.html" import placeholder_section %}
 
-{% block title %}Use Case 3{% endblock %}
+{% block title %}Case 3 - Customer Segmentation{% endblock %}
 
 {% block content %}
-{{ placeholder_section(
-    "Use Case 3",
-    "A real-world scenario where Machine Learning is applied."
-) }}
+
+<!-- Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <span class="badge bg-primary mb-3">
+            USE CASE 3
+        </span>
+
+        <h1 class="display-5 fw-bold">
+            Customer Segmentation
+        </h1>
+
+        <p class="lead text-muted">
+            Using Unsupervised Learning to discover groups of similar customers
+        </p>
+
+    </div>
+</section>
+
+
+<!-- Problem Context -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-3">
+            Problem Context
+        </h2>
+
+        <p class="text-muted">
+            Customers can have very different purchasing behaviors,
+            preferences, and levels of activity. Treating every customer
+            in the same way can make it difficult for businesses to create
+            effective marketing strategies.
+        </p>
+
+        <p class="text-muted">
+            In many situations, businesses do not have predefined categories
+            that accurately describe their customers.
+        </p>
+
+        <p class="text-muted">
+            Machine Learning can analyze customer data and discover groups
+            of customers that have similar behaviors and characteristics.
+        </p>
+
+    </div>
+</section>
+
+
+<!-- Objective -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-3">
+            Objective
+        </h2>
+
+        <p class="text-muted">
+            The objective is to identify groups of customers with similar
+            purchasing behaviors and characteristics.
+        </p>
+
+        <div class="card border-0 shadow-sm mt-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold">
+                    Main Question
+                </h5>
+
+                <p class="mb-0">
+                    Which customers have similar behaviors and characteristics?
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Data -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            Data That Could Be Used
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Purchase Frequency
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            How often a customer makes purchases.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Total Spending
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Total amount of money spent by a customer.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Average Purchase Value
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Average amount spent in each purchase.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Products Purchased
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Types and quantities of products purchased by customers.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Customer Activity
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Customer interactions with the business or platform.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Purchase History
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Historical information about previous purchases.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- How Machine Learning Works -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            How Does Machine Learning Work in This Case?
+        </h2>
+
+        <div class="row g-4">
+
+            <!-- Step 1 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            01
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Data Collection
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Customer information such as purchases,
+                            spending, and activity is collected.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            02
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Pattern Analysis
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The algorithm analyzes similarities and differences
+                            between customers without predefined categories.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            03
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Customer Groups
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The algorithm creates groups of customers that
+                            have similar behaviors and characteristics.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ML Type and Problem Type -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- ML Type -->
+            <div class="col-md-6">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            MACHINE LEARNING TYPE
+                        </span>
+
+                        <h3 class="fw-bold">
+                            Unsupervised Learning
+                        </h3>
+
+                        <p class="text-muted">
+                            Unsupervised Learning works with data that does
+                            not have predefined labels or categories. The
+                            algorithm discovers patterns and relationships
+                            within the data.
+                        </p>
+
+                        <div class="alert alert-primary mt-4">
+
+                            <strong>Key Idea:</strong>
+                            The model discovers groups without being given
+                            the correct group for each customer.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Problem Type -->
+            <div class="col-md-6">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            PROBLEM TYPE
+                        </span>
+
+                        <h3 class="fw-bold">
+                            Clustering
+                        </h3>
+
+                        <p class="text-muted">
+                            Clustering groups data points according to their
+                            similarities. In this case, customers are grouped
+                            according to their behaviors and characteristics.
+                        </p>
+
+                        <div class="alert alert-primary mt-4">
+
+                            <strong>Possible Output:</strong>
+                            Groups of Similar Customers
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Benefits -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            Potential Benefits
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Understand Customers
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Discover different customer behaviors and
+                            purchasing patterns.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Personalized Marketing
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Create marketing strategies adapted to different
+                            customer groups.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Identify Valuable Groups
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Identify customer groups with high levels of
+                            activity or spending.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Discover Hidden Patterns
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Find relationships and customer groups that
+                            may not be obvious through manual analysis.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Summary -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4">
+
+                <h2 class="fw-bold mb-3">
+                    Case Summary
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Customer Segmentation uses
+                    <strong>Unsupervised Learning</strong> to analyze customer
+                    behavior without predefined categories. The model solves
+                    a <strong>Clustering</strong> problem by discovering groups
+                    of customers with similar characteristics and purchasing
+                    behaviors.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
 {% endblock %}
