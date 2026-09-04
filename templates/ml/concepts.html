@@ -1,11 +1,145 @@
 {% extends "base.html" %}
-{% from "_macros.html" import placeholder_section %}
 
-{% block title %}Concepts - Machine Learning{% endblock %}
+{% block title %}ML Concepts - Data with Roots{% endblock %}
 
 {% block content %}
-{{ placeholder_section(
-    "Machine Learning Concepts",
-    "The fundamental ideas, terminology, and building blocks behind Machine Learning."
-) }}
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Machine Learning Concepts</h1>
+        <p class="text-muted">Understanding the basics before diving into practice.</p>
+    </div>
+
+    <!-- What is ML + Purpose -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card h-100 dwr-card border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-lightbulb dwr-icon"></i>
+                    <h5 class="card-title mt-3">What is Machine Learning?</h5>
+                    <p class="card-text">
+                        Machine Learning (ML) is a branch of Artificial Intelligence that allows
+                        computers to learn patterns from data and improve their performance on a
+                        task without being explicitly programmed for every single rule. Instead of
+                        writing fixed instructions, we feed the computer examples, and it learns
+                        the underlying pattern by itself.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 dwr-card border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-bullseye dwr-icon"></i>
+                    <h5 class="card-title mt-3">Main Purpose</h5>
+                    <p class="card-text">
+                        The main purpose of Machine Learning is to build models capable of making
+                        accurate predictions or decisions based on data, so that repetitive or
+                        complex analytical tasks can be automated, and hidden patterns in large
+                        amounts of information can be discovered.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Relationship: data, training, model, predictions -->
+    <div class="mb-5">
+        <h3 class="fw-bold text-center mb-4">From Data to Predictions</h3>
+        <p class="text-muted text-center mb-4">
+            Every Machine Learning project follows the same general flow. Each stage depends on
+            the one before it:
+        </p>
+
+        <div class="row g-3 text-center align-items-stretch">
+            <div class="col-md-3">
+                <div class="card h-100 dwr-card border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-database dwr-icon"></i>
+                        <h6 class="card-title mt-3">1. Data</h6>
+                        <p class="card-text small text-muted">
+                            Raw information collected about the problem (numbers, text, images, etc.).
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 d-none d-md-flex align-items-center justify-content-center">
+                <i class="bi bi-arrow-right fs-3 text-muted"></i>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 dwr-card border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-gear dwr-icon"></i>
+                        <h6 class="card-title mt-3">2. Training</h6>
+                        <p class="card-text small text-muted">
+                            The algorithm studies the data and adjusts itself to find patterns.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 d-none d-md-flex align-items-center justify-content-center">
+                <i class="bi bi-arrow-right fs-3 text-muted"></i>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 dwr-card border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="bi bi-diagram-3 dwr-icon"></i>
+                        <h6 class="card-title mt-3">3. Model</h6>
+                        <p class="card-text small text-muted">
+                            The result of training: a set of rules the computer learned from data.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-3">
+                <div class="card dwr-card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="bi bi-graph-up-arrow dwr-icon"></i>
+                        <h6 class="card-title mt-3">4. Predictions</h6>
+                        <p class="card-text small text-muted">
+                            The trained model is used on new data to predict or classify outcomes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Importance of data -->
+    <div class="row g-4 mb-5 align-items-center">
+        <div class="col-md-6">
+            <div class="card h-100 dwr-card border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-shield-check dwr-icon"></i>
+                    <h5 class="card-title mt-3">Why Data Matters</h5>
+                    <p class="card-text">
+                        Data is the foundation of every Machine Learning model. The quality,
+                        amount, and diversity of the data directly determine how good the model's
+                        predictions will be. Poor or biased data leads to poor or biased models,
+                        no matter how advanced the algorithm is &mdash; this is often summarized as
+                        "garbage in, garbage out".
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 dwr-card border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-list-check dwr-icon"></i>
+                    <h5 class="card-title mt-3">Simple Examples</h5>
+                    <ul class="card-text mb-0">
+                        <li>Predicting house prices based on their size and location.</li>
+                        <li>Filtering spam emails from a user's inbox.</li>
+                        <li>Recommending movies based on watch history.</li>
+                        <li>Recognizing handwritten digits in a scanned document.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
 {% endblock %}
