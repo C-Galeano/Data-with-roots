@@ -1,11 +1,318 @@
 {% extends "base.html" %}
-{% from "_macros.html" import placeholder_section %}
 
 {% block title %}Application - Linear Regression{% endblock %}
 
 {% block content %}
-{{ placeholder_section(
-    "Linear Regression: Application",
-    "A hands-on, practical application of Linear Regression."
-) }}
+
+<div class="container py-5">
+
+    <!-- TITLE -->
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            Linear Regression
+        </span>
+
+        <h1 class="fw-bold">
+            Estimate Number of Customers
+        </h1>
+
+        <p class="lead text-muted">
+            Application of Simple Linear Regression to estimate the number
+            of customers according to daily marketing spend.
+        </p>
+    </div>
+
+
+    <!-- 1. PROBLEM CONTEXT -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                1. Problem Context
+            </h2>
+
+            <p>
+                Coffee shops invest money in marketing campaigns and
+                promotions with the objective of attracting more customers.
+                However, it is important to understand whether there is a
+                relationship between the amount of money invested in marketing
+                and the number of customers received per day.
+            </p>
+
+            <p>
+                In this application, the phenomenon being analyzed is the
+                relationship between <strong>daily marketing spend</strong>
+                and the <strong>number of customers per day</strong>.
+                The data represents daily observations from a coffee shop
+                environment.
+            </p>
+
+            <p class="mb-0">
+                The purpose of applying Simple Linear Regression is to identify
+                the relationship between these two quantitative variables and
+                use that relationship to estimate the number of customers
+                expected for a given daily marketing investment.
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- 2. VARIABLES -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-4">
+                2. Variables
+            </h2>
+
+            <div class="row g-4">
+
+                <!-- X -->
+                <div class="col-md-6">
+                    <div class="border rounded p-4 h-100">
+
+                        <h4 class="fw-bold">
+                            Independent Variable (X)
+                        </h4>
+
+                        <p class="mb-2">
+                            <strong>Marketing_Spend_Per_Day</strong>
+                        </p>
+
+                        <p class="text-muted mb-2">
+                            Daily amount of money invested in marketing
+                            campaigns and promotions.
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Unit:</strong> US dollars per day ($/day)
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <!-- Y -->
+                <div class="col-md-6">
+                    <div class="border rounded p-4 h-100">
+
+                        <h4 class="fw-bold">
+                            Dependent Variable (Y)
+                        </h4>
+
+                        <p class="mb-2">
+                            <strong>Number_of_Customers_Per_Day</strong>
+                        </p>
+
+                        <p class="text-muted mb-2">
+                            Total number of customers visiting the coffee shop
+                            during a day.
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Unit:</strong> customers per day
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 3. DATASET -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-4">
+                3. Dataset
+            </h2>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <p class="mb-2">
+                        <strong>Dataset:</strong>
+                        Coffee Shop Daily Revenue Prediction Dataset
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Records:</strong>
+                        {{ total_records }} data records
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Source:</strong>
+                        Kaggle
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <p class="mb-2">
+                        <strong>Independent variable:</strong><br>
+                        Marketing_Spend_Per_Day
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Unit:</strong>
+                        US dollars per day ($/day)
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Dependent variable:</strong><br>
+                        Number_of_Customers_Per_Day
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="mt-4 p-3 rounded bg-light">
+
+                <p class="mb-0">
+                    The dataset contains more than the required 500 records
+                    for the implementation of the Simple Linear Regression
+                    model.
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 4. LINEAR REGRESSION MODEL AND PREDICTION -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                4. Linear Regression Model
+            </h2>
+
+            <p>
+                The model is implemented in Python using the
+                <strong>scikit-learn</strong> library. The independent
+                variable is used as the input and the dependent variable
+                represents the value that the model attempts to predict.
+            </p>
+
+            <div class="bg-light rounded p-3 mb-4">
+
+                <p class="mb-1">
+                    <strong>Training process:</strong>
+                </p>
+
+                <p class="mb-0">
+                    Dataset → Pandas → X and Y → LinearRegression() →
+                    model.fit() → model.predict()
+                </p>
+
+            </div>
+
+
+            <!-- PREDICTION FORM -->
+            <h4 class="fw-bold mb-3">
+                Customer Prediction
+            </h4>
+
+            <p class="text-muted">
+                Enter the amount of money spent on marketing per day to
+                estimate the number of customers.
+            </p>
+
+            <form method="post">
+
+                <div class="mb-3">
+
+                    <label
+                        for="marketing_spend"
+                        class="form-label">
+
+                        Marketing Spend Per Day ($)
+
+                    </label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="marketing_spend"
+                        id="marketing_spend"
+                        class="form-control"
+                        placeholder="Example: 250"
+                        required>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn dwr-btn-primary w-100">
+
+                    Predict Number of Customers
+
+                </button>
+
+            </form>
+
+
+            <!-- PREDICTION RESULT -->
+            {% if result is not none %}
+
+            <div class="alert alert-success mt-4 text-center">
+
+                <h5 class="mb-2">
+                    Estimated Number of Customers
+                </h5>
+
+                <p class="fs-3 fw-bold mb-0">
+                    {{ result }}
+                </p>
+
+                <p class="mb-0 mt-2">
+                    customers per day
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+
+    <!-- 5. DATA VISUALIZATION -->
+    {% if plot_url %}
+
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4 text-center">
+
+            <h2 class="fw-bold mb-2">
+                5. Data Visualization
+            </h2>
+
+            <p class="text-muted mb-4">
+                Relationship between daily marketing spend and the number
+                of customers.
+            </p>
+
+            <img
+                src="data:image/png;base64,{{ plot_url }}"
+                class="img-fluid"
+                alt="Linear Regression Plot">
+
+        </div>
+    </div>
+
+    {% endif %}
+
+
+</div>
+
 {% endblock %}
