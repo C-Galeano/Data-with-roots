@@ -56,6 +56,66 @@ body {
     color: var(--dwr-blue-dark);
 }
 
+/* --- Hero ---------------------------------------------------------------- */
+
+.dwr-hero {
+    background: linear-gradient(135deg, var(--dwr-blue-dark) 0%, var(--dwr-blue) 45%, var(--dwr-green-dark) 100%);
+}
+
+.dwr-badge {
+    background-color: rgba(116, 198, 157, 0.18);
+    color: var(--dwr-green-light);
+    border: 1px solid rgba(116, 198, 157, 0.4);
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+
+.dwr-btn-primary {
+    background-color: var(--dwr-green-light);
+    color: var(--dwr-blue-dark);
+    font-weight: 600;
+    border: none;
+}
+
+.dwr-btn-primary:hover {
+    background-color: #fff;
+    color: var(--dwr-blue-dark);
+}
+
+.dwr-btn-outline {
+    border: 1px solid var(--dwr-green);
+    color: var(--dwr-green);
+    font-weight: 500;
+    background: transparent;
+}
+
+.dwr-btn-outline:hover {
+    background-color: var(--dwr-green);
+    color: #fff;
+}
+
+/* --- Cards ----------------------------------------------------------------- */
+
+.dwr-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dwr-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dwr-icon {
+    font-size: 2rem;
+    color: var(--dwr-green);
+}
+
+.dwr-quick-access {
+    background-color: #eef2ee;
+}
+
 /* --- Footer -------------------------------------------------------------- */
 
 .dwr-footer {

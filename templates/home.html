@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Data with Roots - Home{% endblock %}
+
+{% block content %}
+
+<!-- Hero section -->
+<section class="dwr-hero text-white">
+    <div class="container py-5">
+        <div class="row align-items-center py-5">
+            <div class="col-lg-8">
+                <span class="badge rounded-pill dwr-badge mb-3">University Machine Learning Project</span>
+                <h1 class="display-4 fw-bold mb-3">Data with Roots</h1>
+                <p class="lead mb-4">
+                    Exploring data, understanding patterns, and discovering the power of Machine Learning.
+                </p>
+                <a href="{{ url_for('ml_concepts') }}" class="btn btn-lg dwr-btn-primary">
+                    <i class="bi bi-diagram-3 me-2"></i>Explore Machine Learning
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Introduction section -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">What You'll Find Here</h2>
+        <p class="text-muted col-lg-7 mx-auto">
+            This application walks through the foundations of Machine Learning, real-world
+            applications, and a hands-on look at one of its most fundamental algorithms.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 dwr-card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-lightbulb dwr-icon"></i>
+                    <h5 class="card-title mt-3">ML Concepts</h5>
+                    <p class="card-text text-muted small">
+                        The core ideas and vocabulary behind Machine Learning.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 dwr-card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-diagram-3 dwr-icon"></i>
+                    <h5 class="card-title mt-3">Types of ML</h5>
+                    <p class="card-text text-muted small">
+                        Supervised, unsupervised, and reinforcement learning.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 dwr-card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-globe2 dwr-icon"></i>
+                    <h5 class="card-title mt-3">Real-world Use Cases</h5>
+                    <p class="card-text text-muted small">
+                        Practical examples of Machine Learning in action.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 dwr-card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-graph-up dwr-icon"></i>
+                    <h5 class="card-title mt-3">Linear Regression</h5>
+                    <p class="card-text text-muted small">
+                        A guided look at concepts and a practical application.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick access section -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Jump Right In</h2>
+            <p class="text-muted">Choose a section to start exploring.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">
+                            <i class="bi bi-diagram-3 text-success me-2"></i>Machine Learning
+                        </h5>
+                        <p class="card-text text-muted flex-grow-1">
+                            Learn the fundamental concepts and the different types of Machine Learning.
+                        </p>
+                        <a href="{{ url_for('ml_concepts') }}" class="btn dwr-btn-outline mt-2">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">
+                            <i class="bi bi-globe2 text-success me-2"></i>Use Cases
+                        </h5>
+                        <p class="card-text text-muted flex-grow-1">
+                            Discover real-world scenarios where Machine Learning makes a difference.
+                        </p>
+                        <a href="{{ url_for('use_case_1') }}" class="btn dwr-btn-outline mt-2">View Use Cases</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">
+                            <i class="bi bi-graph-up text-success me-2"></i>Linear Regression
+                        </h5>
+                        <p class="card-text text-muted flex-grow-1">
+                            Go from theory to practice with a supervised learning algorithm.
+                        </p>
+                        <a href="{{ url_for('regression_concepts') }}" class="btn dwr-btn-outline mt-2">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
