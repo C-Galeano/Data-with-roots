@@ -1,11 +1,537 @@
 {% extends "base.html" %}
-{% from "_macros.html" import placeholder_section %}
 
-{% block title %}Use Case 4{% endblock %}
+{% block title %}Case 4 - Autonomous Robot Navigation{% endblock %}
 
 {% block content %}
-{{ placeholder_section(
-    "Use Case 4",
-    "A real-world scenario where Machine Learning is applied."
-) }}
+
+<!-- Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <span class="badge bg-primary mb-3">
+            USE CASE 4
+        </span>
+
+        <h1 class="display-5 fw-bold">
+            Autonomous Robot Navigation
+        </h1>
+
+        <p class="lead text-muted">
+            Using Reinforcement Learning to teach a robot how to navigate its environment
+        </p>
+
+    </div>
+</section>
+
+
+<!-- Problem Context -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-3">
+            Problem Context
+        </h2>
+
+        <p class="text-muted">
+            Autonomous robots need to move through different environments
+            while avoiding obstacles and reaching specific destinations.
+            Programming every possible situation manually can be difficult,
+            especially when the environment changes.
+        </p>
+
+        <p class="text-muted">
+            Reinforcement Learning allows a robot to learn through interaction
+            with its environment. Instead of receiving the correct action for
+            every situation, the robot receives rewards or penalties depending
+            on the result of its actions.
+        </p>
+
+        <p class="text-muted">
+            Over time, the robot can learn which actions produce better results
+            and improve its navigation strategy.
+        </p>
+
+    </div>
+</section>
+
+
+<!-- Objective -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-3">
+            Objective
+        </h2>
+
+        <p class="text-muted">
+            The objective is to train an autonomous robot to navigate through
+            an environment, avoid obstacles, and reach a target destination
+            by learning from rewards and penalties.
+        </p>
+
+        <div class="card border-0 shadow-sm mt-4">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold">
+                    Main Question
+                </h5>
+
+                <p class="mb-0">
+                    Which action should the robot take to reach its destination
+                    while avoiding obstacles?
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Data -->
+<section class="py-5">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            Data That Could Be Used
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Robot Position
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The current position of the robot inside the environment.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Distance to Obstacles
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Information about the distance between the robot
+                            and nearby obstacles.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Target Position
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The location that the robot needs to reach.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Previous Actions
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Information about actions previously taken by the robot.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Rewards
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Positive values received for useful actions or
+                            successful navigation.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Penalties
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Negative values received for collisions,
+                            inefficient movements, or incorrect actions.
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- How Machine Learning Works -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            How Does Machine Learning Work in This Case?
+        </h2>
+
+        <div class="row g-4">
+
+            <!-- Step 1 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            01
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Observe the Environment
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The robot observes its current position,
+                            nearby obstacles, and the location of the target.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            02
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Take an Action
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The robot chooses an action such as moving forward,
+                            turning left, turning right, or stopping.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body">
+
+                        <span class="badge bg-primary mb-3">
+                            03
+                        </span>
+
+                        <h5 class="fw-bold">
+                            Receive a Reward
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The robot receives a reward or penalty depending
+                            on the result of its action and uses this experience
+                            to improve future decisions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ML Type and Problem Type -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- ML Type -->
+            <div class="col-md-6">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            MACHINE LEARNING TYPE
+                        </span>
+
+                        <h3 class="fw-bold">
+                            Reinforcement Learning
+                        </h3>
+
+                        <p class="text-muted">
+                            Reinforcement Learning is a type of Machine Learning
+                            in which an agent learns by interacting with an
+                            environment and receiving rewards or penalties.
+                        </p>
+
+                        <div class="alert alert-primary mt-4">
+
+                            <strong>Key Idea:</strong>
+                            The robot learns which actions are more effective
+                            through trial and error.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Problem Type -->
+            <div class="col-md-6">
+
+                <div class="card h-100 border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            PROBLEM TYPE
+                        </span>
+
+                        <h3 class="fw-bold">
+                            Decision Making
+                        </h3>
+
+                        <p class="text-muted">
+                            The model learns which actions should be selected
+                            in different situations to maximize the total reward
+                            received over time.
+                        </p>
+
+                        <div class="alert alert-primary mt-4">
+
+                            <strong>Possible Actions:</strong>
+                            Move Forward / Turn Left / Turn Right / Stop
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Benefits -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h2 class="fw-bold mb-4">
+            Potential Benefits
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Autonomous Navigation
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Allow robots to navigate environments without
+                            requiring every movement to be manually programmed.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Adaptation
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The robot can improve its behavior when interacting
+                            with different environments.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Learn From Experience
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The system can improve its decisions through
+                            repeated interaction and feedback.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+                            Efficient Decision Making
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The robot can learn strategies that maximize
+                            rewards while reducing unnecessary movements
+                            and collisions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Summary -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4">
+
+                <h2 class="fw-bold mb-3">
+                    Case Summary
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Autonomous Robot Navigation can use
+                    <strong>Reinforcement Learning</strong> to teach a robot
+                    how to make navigation decisions through interaction with
+                    its environment. The robot receives rewards for useful
+                    actions and penalties for undesirable actions, allowing
+                    it to gradually learn a strategy for reaching its
+                    destination while avoiding obstacles.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
 {% endblock %}
