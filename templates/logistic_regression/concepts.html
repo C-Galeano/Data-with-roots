@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+
+{% block title %}Concepts - Logistic Regression{% endblock %}
+
+{% block content %}
+
+<!-- Hero section -->
+<section class="dwr-hero text-white">
+    <div class="container py-5">
+        <div class="text-center py-5">
+            <span class="badge rounded-pill dwr-badge mb-3">
+                Supervised Learning
+            </span>
+
+            <h1 class="display-4 fw-bold text-white mb-3">
+                Logistic Regression: Concepts
+            </h1>
+        </div>
+    </div>
+</section>
+
+
+<!-- What is Logistic Regression? -->
+<section class="container py-5">
+    <div class="row align-items-center g-5">
+
+        <div class="col-lg-7">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                01 · Fundamentals
+            </span>
+
+            <h2 class="fw-bold mb-3">
+                What is Logistic Regression?
+            </h2>
+
+            <p class="text-muted">
+                Logistic Regression is a supervised Machine Learning algorithm
+                used to predict which of two possible categories an
+                observation belongs to, based on one or more independent
+                variables.
+            </p>
+
+            <p class="text-muted mb-0">
+                Instead of predicting a numerical quantity, it estimates the
+                <strong>probability</strong> that an observation belongs to a
+                given class, and then uses that probability to assign a
+                final label.
+            </p>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-diagram-2 dwr-icon"></i>
+                    </div>
+
+                    <h5 class="fw-bold text-center">
+                        Main Idea
+                    </h5>
+
+                    <p class="text-muted text-center mb-0">
+                        Estimate the probability that an observation belongs
+                        to a class, and use that probability to classify it.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Why is it a classification algorithm / Binary classification -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                02 · Classification
+            </span>
+
+            <h2 class="fw-bold">
+                Why is Logistic Regression a Classification Algorithm?
+            </h2>
+
+            <p class="text-muted col-lg-8 mx-auto">
+                Even though it is built on a linear combination of variables,
+                Logistic Regression does not output a continuous number as
+                its final answer. It transforms that linear combination into
+                a probability between 0 and 1, and that probability is then
+                converted into a discrete class label. That final step,
+                assigning a label instead of a quantity, is what makes it a
+                classification algorithm.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-signpost-split dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            What is Binary Classification?
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            Binary classification is a type of problem where
+                            every observation belongs to exactly one of two
+                            possible classes, for example
+                            <strong>Yes / No</strong> or
+                            <strong>Germinated / Not Germinated</strong>.
+                            Logistic Regression is the classic algorithm used
+                            to solve this kind of problem.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-percent dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Probability of Belonging to a Class
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            For every observation, the model calculates a
+                            value between 0 and 1 that represents how likely
+                            it is that the observation belongs to the
+                            positive class (labeled as 1). A probability of
+                            0.90 means the model is very confident the
+                            observation belongs to class 1.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Variables -->
+<section class="container py-5">
+    <div class="row align-items-center g-5">
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-5">
+                    <div class="display-4 fw-bold text-success">
+                        X
+                    </div>
+
+                    <h5 class="fw-bold mt-3">
+                        Independent Variable
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        The input used by the model to estimate the
+                        probability of belonging to a class.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                03 · Variables
+            </span>
+
+            <h2 class="fw-bold mb-3">
+                Independent and Target Variables
+            </h2>
+
+            <p class="text-muted">
+                As in other supervised models, Logistic Regression uses one
+                or more <strong>independent variables (X)</strong> to explain
+                or predict a <strong>target (dependent) variable (Y)</strong>.
+            </p>
+
+            <p class="text-muted mb-0">
+                The key difference is that in Logistic Regression the target
+                variable is not numerical: it is a
+                <strong>binary categorical variable</strong>, meaning it can
+                only take one of two possible values, usually encoded as
+                0 and 1.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Classes / labels -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                04 · Classes and Labels
+            </span>
+
+            <h2 class="fw-bold">
+                Classes or Labels
+            </h2>
+
+            <p class="text-muted col-lg-8 mx-auto">
+                The two possible values of the target variable are called
+                <strong>classes</strong> or <strong>labels</strong>. Each
+                class must be clearly defined so the model's output can be
+                interpreted correctly. For example:
+            </p>
+        </div>
+
+        <div class="row justify-content-center g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="display-6 fw-bold text-danger">0</div>
+                    <p class="fw-semibold mb-0">No / Low Risk / Negative class</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="display-6 fw-bold text-success">1</div>
+                    <p class="fw-semibold mb-0">Yes / High Risk / Positive class</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Classification threshold -->
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            05 · Decision Rule
+        </span>
+
+        <h2 class="fw-bold">
+            Classification Threshold
+        </h2>
+
+        <p class="text-muted col-lg-8 mx-auto">
+            Since the model outputs a probability rather than a class, a
+            <strong>threshold</strong> is needed to turn that probability
+            into a final decision. The most common threshold is 0.5.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-lg-5 text-center">
+
+                    <div class="row g-3 text-start">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded h-100">
+                                <strong>Probability &lt; 0.5</strong>
+                                <p class="text-muted small mb-0">
+                                    The observation is classified as class 0.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded h-100">
+                                <strong>Probability &ge; 0.5</strong>
+                                <p class="text-muted small mb-0">
+                                    The observation is classified as class 1.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- Linear vs Logistic Regression -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                06 · Comparison
+            </span>
+
+            <h2 class="fw-bold">
+                Linear Regression vs. Logistic Regression
+            </h2>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="table-responsive">
+                    <table class="table table-bordered bg-white align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Linear Regression</th>
+                                <th>Logistic Regression</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-semibold">Type of problem</td>
+                                <td>Regression (predicts a number)</td>
+                                <td>Classification (predicts a class)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Target variable</td>
+                                <td>Continuous / numerical</td>
+                                <td>Binary / categorical (0 or 1)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Output</td>
+                                <td>A number on the real line</td>
+                                <td>A probability between 0 and 1</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Function used</td>
+                                <td>Straight line (Y = &beta;&#8320; + &beta;&#8321;X)</td>
+                                <td>Sigmoid / logistic function</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-semibold">Result interpretation</td>
+                                <td>Estimated quantity</td>
+                                <td>Probability converted into a class using a threshold</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Key Idea -->
+<section class="container py-5">
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center p-4 p-lg-5">
+
+            <i class="bi bi-lightbulb dwr-icon"></i>
+
+            <h3 class="fw-bold mt-3">
+                Key Idea
+            </h3>
+
+            <p class="text-muted col-lg-8 mx-auto mb-0">
+                Logistic Regression learns the relationship between one or
+                more independent variables and a binary outcome, expresses
+                that relationship as a probability, and applies a threshold
+                to decide which of the two possible classes each observation
+                belongs to.
+            </p>
+
+        </div>
+    </div>
+
+</section>
+
+
+<!-- Continue to Application -->
+<section class="container pb-5">
+    <div class="text-center">
+
+        <p class="text-muted mb-4">
+            Continue to the application to explore a real dataset and
+            classify new observations.
+        </p>
+
+        <a href="{{ url_for('logistic_regression_application') }}"
+           class="btn btn-lg dwr-btn-primary">
+            <i class="bi bi-arrow-right-circle me-2"></i>
+            Go to Application
+        </a>
+
+    </div>
+</section>
+
+{% endblock %}

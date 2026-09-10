@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+{% block title %}Application - Logistic Regression{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- TITLE -->
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            Logistic Regression
+        </span>
+
+        <h1 class="fw-bold">
+            Seed Germination Prediction
+        </h1>
+
+        <p class="lead text-muted">
+            Application of Binary Logistic Regression to classify whether a
+            seed will germinate according to soil moisture.
+        </p>
+    </div>
+
+
+    <!-- 1. PROBLEM CONTEXT -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                1. Problem Context
+            </h2>
+
+            <p>
+                Soil moisture is one of the main factors that determines
+                whether a planted seed successfully germinates. Too little
+                moisture prevents the seed from activating its germination
+                process, while adequate moisture levels significantly
+                increase the chance of a seedling emerging.
+            </p>
+
+            <p>
+                In this application, the phenomenon being analyzed is the
+                relationship between <strong>soil moisture percentage</strong>
+                and whether a seed <strong>germinates or not</strong>. Each
+                record represents one planted seed observed under a given
+                moisture condition.
+            </p>
+
+            <p class="mb-0">
+                The purpose of applying Binary Logistic Regression is to
+                estimate the probability that a seed will germinate given a
+                soil moisture level, and to classify each new observation
+                into one of two possible classes: <strong>Germinated</strong>
+                or <strong>Not Germinated</strong>.
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- 2. VARIABLES -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-4">
+                2. Variables
+            </h2>
+
+            <div class="row g-4">
+
+                <!-- X -->
+                <div class="col-md-6">
+                    <div class="border rounded p-4 h-100">
+
+                        <h4 class="fw-bold">
+                            Independent Variable (X)
+                        </h4>
+
+                        <p class="mb-2">
+                            <strong>Soil_Moisture_Percent</strong>
+                        </p>
+
+                        <p class="text-muted mb-2">
+                            Percentage of moisture present in the soil where
+                            the seed was planted.
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Unit:</strong> percentage (0% – 100%)
+                        </p>
+
+                    </div>
+                </div>
+
+                <!-- Y -->
+                <div class="col-md-6">
+                    <div class="border rounded p-4 h-100">
+
+                        <h4 class="fw-bold">
+                            Target Variable (Y)
+                        </h4>
+
+                        <p class="mb-2">
+                            <strong>Germinated</strong> (binary)
+                        </p>
+
+                        <p class="text-muted mb-2">
+                            Indicates whether the seed germinated.
+                        </p>
+
+                        <p class="mb-1">
+                            <span class="badge bg-danger">0</span> Not Germinated
+                        </p>
+
+                        <p class="mb-0">
+                            <span class="badge bg-success">1</span> Germinated
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 3. DATASET -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-4">
+                3. Dataset
+            </h2>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <p class="mb-2">
+                        <strong>Dataset:</strong>
+                        Seed Germination Dataset
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Records:</strong>
+                        {{ total_records }} data records
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Source:</strong>
+                        Synthetically generated for this application, based on
+                        a realistic logistic relationship between soil
+                        moisture and germination (see
+                        <code>data/generate_seed_germination_dataset.py</code>).
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <p class="mb-2">
+                        <strong>Independent variable:</strong><br>
+                        Soil_Moisture_Percent
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Target variable:</strong><br>
+                        Germinated (0 = Not Germinated, 1 = Germinated)
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Classes:</strong><br>
+                        Two possible classes, as described above.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="mt-4 p-3 rounded bg-light">
+                <p class="mb-0">
+                    The dataset is loaded from a CSV file using
+                    <strong>Pandas</strong> and contains one independent
+                    variable and one binary target variable, as required for
+                    a Binary Logistic Regression model.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 4. TRAIN/TEST SPLIT + MODEL -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                4. Train/Test Split and Model Training
+            </h2>
+
+            <p>
+                Before training, the dataset is split into a training set
+                and a testing set using scikit-learn's
+                <code>train_test_split()</code>, so that the model's
+                performance can later be evaluated on data it has never
+                seen.
+            </p>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="p-3 border rounded text-center h-100">
+                        <div class="display-6 fw-bold text-success">80%</div>
+                        <p class="mb-0 text-muted">Training data</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded text-center h-100">
+                        <div class="display-6 fw-bold text-success">20%</div>
+                        <p class="mb-0 text-muted">Testing data</p>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                The model is implemented in Python using the
+                <strong>scikit-learn</strong> <code>LogisticRegression</code>
+                class, trained only on the training split.
+            </p>
+
+            <div class="bg-light rounded p-3">
+                <p class="mb-1">
+                    <strong>Process:</strong>
+                </p>
+                <p class="mb-0">
+                    CSV Dataset → Pandas → X and y → 80/20 Split →
+                    LogisticRegression().fit() → model.predict() →
+                    Evaluation → New Classifications
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 5. CLASSIFICATION FORM -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                5. Binary Classification Form
+            </h2>
+
+            <p class="text-muted">
+                Enter a soil moisture percentage to classify whether the seed
+                is predicted to germinate.
+            </p>
+
+            <form method="post">
+
+                <div class="mb-3">
+
+                    <label for="soil_moisture" class="form-label">
+                        Soil Moisture (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        max="100"
+                        name="soil_moisture"
+                        id="soil_moisture"
+                        class="form-control"
+                        placeholder="Example: 45"
+                        required>
+
+                    <div class="form-text">
+                        Enter a value between 0 and 100.
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn dwr-btn-primary w-100">
+                    Classify
+                </button>
+
+            </form>
+
+            {% if error %}
+            <div class="alert alert-danger mt-4 text-center mb-0">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <!-- PREDICTION RESULT -->
+            {% if predicted_label %}
+
+            <div class="alert {{ 'alert-success' if predicted_class == 1 else 'alert-secondary' }} mt-4 text-center">
+
+                <h5 class="mb-2">
+                    Predicted Class
+                </h5>
+
+                <p class="fs-3 fw-bold mb-1">
+                    {{ predicted_class }} &middot; {{ predicted_label }}
+                </p>
+
+                <p class="mb-0">
+                    Estimated probability of germination: <strong>{{ probability }}%</strong>
+                </p>
+
+                <p class="mb-0 mt-2 small">
+                    {% if predicted_class == 1 %}
+                        The model estimates that, under this soil moisture
+                        level, the seed is more likely to germinate than not.
+                    {% else %}
+                        The model estimates that, under this soil moisture
+                        level, the seed is more likely to fail to germinate.
+                    {% endif %}
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+
+    <!-- 6. DATA VISUALIZATION -->
+    {% if plot_url %}
+
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4 text-center">
+
+            <h2 class="fw-bold mb-2">
+                6. Data Visualization
+            </h2>
+
+            <p class="text-muted mb-4">
+                Observations grouped by classification label (Germinated /
+                Not Germinated), together with the probability curve learned
+                by the model and your prediction.
+            </p>
+
+            <img
+                src="data:image/png;base64,{{ plot_url }}"
+                class="img-fluid"
+                alt="Logistic Regression Plot">
+
+        </div>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
