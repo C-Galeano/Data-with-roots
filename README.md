@@ -1,18 +1,20 @@
 # Data with Roots
 
 University Machine Learning project built as a Flask web application. It presents Machine
-Learning concepts, real-world use cases, and a guided walkthrough of Linear Regression.
+Learning concepts, real-world use cases, and guided walkthroughs of Linear Regression and
+Logistic Regression classification.
 
 ## Objective
 
 Provide a clear, well-structured web app that explains Machine Learning fundamentals and
-showcases a supervised learning algorithm (Linear Regression), combining an academic
-presentation with a clean, modern design.
+showcases supervised learning algorithms (Linear Regression and Logistic Regression),
+combining an academic presentation with a clean, modern design.
 
 ## Technologies
 
 - Python
 - Flask
+- Pandas / scikit-learn
 - HTML5 + Jinja2
 - Bootstrap 5
 - Git / GitHub
@@ -26,6 +28,11 @@ data-with-roots/
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
+│
+├── data/
+│   ├── coffee_shop_revenue.csv                 # Linear Regression dataset
+│   ├── seed_germination.csv                    # Logistic Regression dataset
+│   └── generate_seed_germination_dataset.py    # Generator for the dataset above
 │
 ├── templates/
 │   ├── base.html          # Shared layout: navbar, footer, blocks
@@ -41,7 +48,11 @@ data-with-roots/
 │   │   ├── use_case_3.html
 │   │   └── use_case_4.html
 │   │
-│   └── regression/        # Supervised > Linear Regression
+│   ├── regression/        # Supervised > Linear Regression
+│   │   ├── concepts.html
+│   │   └── application.html
+│   │
+│   └── logistic_regression/  # Supervised > Logistic Regression
 │       ├── concepts.html
 │       └── application.html
 │
@@ -78,16 +89,21 @@ data-with-roots/
 
 ## Routes
 
-| Route                    | Description                     |
-|---------------------------|----------------------------------|
-| `/`                        | Home                             |
-| `/ml/concepts`             | Machine Learning Concepts        |
-| `/ml/types`                | Types of Machine Learning        |
-| `/use-cases/1..4`          | Use Cases 1 to 4                 |
-| `/regression/concepts`     | Linear Regression - Concepts     |
-| `/regression/application`  | Linear Regression - Application  |
+| Route                          | Description                       |
+|---------------------------------|------------------------------------|
+| `/`                              | Home                               |
+| `/ml/concepts`                   | Machine Learning Concepts          |
+| `/ml/types`                      | Types of Machine Learning          |
+| `/use-cases/1..4`                | Use Cases 1 to 4                   |
+| `/regression/concepts`           | Linear Regression - Concepts       |
+| `/regression/application`        | Linear Regression - Application    |
+| `/logistic-regression/concepts`     | Logistic Regression - Concepts     |
+| `/logistic-regression/application`  | Logistic Regression - Application  |
 
 ## Status
 
-The base structure, navigation, and Home page are complete. Sections marked as
-"Coming Soon" are placeholders ready for the rest of the team to develop.
+Activity 1 (base structure, navigation, Machine Learning, Use Cases and Linear Regression)
+is complete. Activity 2 adds Logistic Regression (Concepts + Application) for the Seed
+Germination Prediction problem. Evaluation Metrics for Logistic Regression and the group's
+assigned classification model (Gradient Boosting Classifier) are being developed by the
+rest of the team on this same `R1A2` branch.
