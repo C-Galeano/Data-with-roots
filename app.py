@@ -11,6 +11,14 @@ from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import train_test_split
 
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    confusion_matrix
+)
+
 app = Flask(__name__)
 
 df = pd.read_csv("data/coffee_shop_revenue.csv")
@@ -39,6 +47,100 @@ logreg_x_train, logreg_x_test, logreg_y_train, logreg_y_test = train_test_split(
 
 logreg_model = LogisticRegression()
 logreg_model.fit(logreg_x_train, logreg_y_train)
+
+# --- Logistic Regression Evaluation ---
+
+logreg_y_pred = logreg_model.predict(logreg_x_test)
+
+logreg_cm = confusion_matrix(logreg_y_test, logreg_y_pred)
+
+logreg_accuracy = accuracy_score(logreg_y_test, logreg_y_pred)
+
+logreg_precision = precision_score(
+    logreg_y_test,
+    logreg_y_pred,
+    zero_division=0
+)
+
+logreg_recall = recall_score(
+    logreg_y_test,
+    logreg_y_pred,
+    zero_division=0
+)
+
+logreg_f1 = f1_score(
+    logreg_y_test,
+    logreg_y_pred,
+    zero_division=0
+)
+
+def create_logreg_confusion_matrix():
+    cm = logreg_cm
+
+    plt.figure(figsize=(7, 5))
+
+    plt.imshow(
+        cm,
+        interpolation="nearest",
+        cmap="Blues"
+    )
+
+    plt.title("Logistic Regression - Confusion Matrix")
+    plt.colorbar()
+
+    classes = [
+        "Not Germinated (0)",
+        "Germinated (1)"
+    ]
+
+    plt.xticks(
+        [0, 1],
+        classes,
+        rotation=20
+    )
+
+    plt.yticks(
+        [0, 1],
+        classes
+    )
+
+    plt.xlabel("Predicted Class")
+    plt.ylabel("Actual Class")
+
+    threshold = cm.max() / 2
+
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(
+                j,
+                i,
+                cm[i, j],
+                horizontalalignment="center",
+                verticalalignment="center",
+                color="white" if cm[i, j] > threshold else "black",
+                fontsize=14,
+                fontweight="bold"
+            )
+
+    plt.tight_layout()
+
+    img = io.BytesIO()
+
+    plt.savefig(
+        img,
+        format="png",
+        bbox_inches="tight"
+    )
+
+    img.seek(0)
+
+    plot_url = base64.b64encode(
+        img.getvalue()
+    ).decode("utf8")
+
+    plt.close()
+
+    return plot_url
 
 
 def classifyGermination(soil_moisture):
@@ -364,6 +466,29 @@ def logistic_regression_application():
         plot_url=plot_url,
         error=error,
         total_records=logreg_total_records
+    )
+
+@app.route("/logistic-regression/evaluation")
+def logistic_regression_evaluation():
+
+    tn, fp, fn, tp = logreg_cm.ravel()
+
+    plot_url = create_logreg_confusion_matrix()
+
+    return render_template(
+        "logistic_regression/evaluation.html",
+        total_records=logreg_total_records,
+        train_records=len(logreg_x_train),
+        test_records=len(logreg_x_test),
+        accuracy=logreg_accuracy,
+        precision=logreg_precision,
+        recall=logreg_recall,
+        f1=logreg_f1,
+        tn=tn,
+        fp=fp,
+        fn=fn,
+        tp=tp,
+        plot_url=plot_url
     )
 
 

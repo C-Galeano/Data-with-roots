@@ -1,0 +1,456 @@
+{% extends "base.html" %}
+
+{% block title %}Evaluation Metrics - Logistic Regression{% endblock %}
+
+{% block content %}
+
+<section class="dwr-hero text-white">
+    <div class="container py-5">
+        <div class="text-center py-4">
+
+            <span class="badge rounded-pill dwr-badge mb-3">
+                Logistic Regression
+            </span>
+
+            <h1 class="text-white">Evaluation Metrics</h1>
+
+            <p class="lead mb-0">
+                Evaluation of the Seed Germination Prediction model.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Dataset -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="text-center mb-4">
+            <span class="dwr-section-badge">
+                Evaluation Dataset
+            </span>
+
+            <h2 class="fw-bold mt-2">
+                Training and Testing Data
+            </h2>
+
+            <p class="text-muted">
+                The dataset is divided into 80% for training and 20% for testing.
+            </p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <div class="col-md-4">
+                <div class="dwr-card h-100 text-center p-4">
+
+                    <div class="dwr-icon mx-auto mb-3">
+                        <i class="bi bi-database"></i>
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Total Records
+                    </h5>
+
+                    <h2 class="fw-bold">
+                        {{ total_records }}
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Seed germination records
+                    </p>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="dwr-card h-100 text-center p-4">
+
+                    <div class="dwr-icon mx-auto mb-3">
+                        <i class="bi bi-mortarboard"></i>
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Training Records
+                    </h5>
+
+                    <h2 class="fw-bold">
+                        {{ train_records }}
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        80% of the dataset
+                    </p>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="dwr-card h-100 text-center p-4">
+
+                    <div class="dwr-icon mx-auto mb-3">
+                        <i class="bi bi-clipboard-check"></i>
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Testing Records
+                    </h5>
+
+                    <h2 class="fw-bold">
+                        {{ test_records }}
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        20% of the dataset
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Metrics -->
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <div class="text-center mb-4">
+
+            <span class="dwr-section-badge">
+                Model Performance
+            </span>
+
+            <h2 class="fw-bold mt-2">
+                Classification Metrics
+            </h2>
+
+            <p class="text-muted">
+                These metrics measure the performance of the Logistic Regression model.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- Accuracy -->
+            <div class="col-md-6 col-lg-3">
+
+                <div class="dwr-card h-100 text-center p-4">
+
+                    <div class="dwr-icon mx-auto mb-3">
+                        <i class="bi bi-bullseye"></i>
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Accuracy
+                    </h5>
+
+                    <h2 class="fw-bold">
+                        {{ "%.2f"|format(accuracy * 100) }}%
+                    </h2>
+
+                    <p class="text-muted small mb-0">
+                        Percentage of correct predictions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Precision -->
+            <div class="col-md-6 col-lg-3">
+
+                <div class="dwr-card h-100 text-center p-4">
+
+                    <div class="dwr-icon mx-auto mb-3">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Precision
+                    </h5>
+
+                    <h2 class="fw-bold">
+                        {{ "%.2f"|format(precision * 100) }}%
+                    </h2>
+
+                    <p class="text-muted small mb-0">
+                        Reliability of positive predictions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Recall -->
+            <div class="col-md-6 col-lg-3">
+
+                <div class="dwr-card h-100 text-center p-4">
+
+                    <div class="dwr-icon mx-auto mb-3">
+                        <i class="bi bi-search"></i>
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Recall
+                    </h5>
+
+                    <h2 class="fw-bold">
+                        {{ "%.2f"|format(recall * 100) }}%
+                    </h2>
+
+                    <p class="text-muted small mb-0">
+                        Germinated seeds correctly identified.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- F1 Score -->
+            <div class="col-md-6 col-lg-3">
+
+                <div class="dwr-card h-100 text-center p-4">
+
+                    <div class="dwr-icon mx-auto mb-3">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
+
+                    <h5 class="fw-bold">
+                        F1-Score
+                    </h5>
+
+                    <h2 class="fw-bold">
+                        {{ "%.2f"|format(f1 * 100) }}%
+                    </h2>
+
+                    <p class="text-muted small mb-0">
+                        Balance between precision and recall.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Confusion Matrix -->
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-4">
+
+            <span class="dwr-section-badge">
+                Visualization
+            </span>
+
+            <h2 class="fw-bold mt-2">
+                Confusion Matrix
+            </h2>
+
+            <p class="text-muted">
+                The confusion matrix shows the correct and incorrect
+                predictions made by the model.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4 align-items-center">
+
+            <!-- Matrix image -->
+            <div class="col-lg-7">
+
+                <div class="dwr-card p-4 text-center">
+
+                    <img
+                        src="data:image/png;base64,{{ plot_url }}"
+                        class="img-fluid"
+                        alt="Logistic Regression Confusion Matrix"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Matrix values -->
+            <div class="col-lg-5">
+
+                <div class="dwr-card p-4">
+
+                    <h4 class="fw-bold mb-4">
+                        Confusion Matrix Values
+                    </h4>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered text-center align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Predicted 0</th>
+                                    <th>Predicted 1</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <th>Actual 0</th>
+
+                                    <td>
+                                        <strong>TN</strong><br>
+                                        {{ tn }}
+                                    </td>
+
+                                    <td>
+                                        <strong>FP</strong><br>
+                                        {{ fp }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Actual 1</th>
+
+                                    <td>
+                                        <strong>FN</strong><br>
+                                        {{ fn }}
+                                    </td>
+
+                                    <td>
+                                        <strong>TP</strong><br>
+                                        {{ tp }}
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Interpretation -->
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="text-center mb-4">
+
+            <span class="dwr-section-badge">
+                Interpretation
+            </span>
+
+            <h2 class="fw-bold mt-2">
+                Understanding the Results
+            </h2>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <div class="dwr-card h-100 p-4">
+
+                    <h5 class="fw-bold">
+                        Confusion Matrix
+                    </h5>
+
+                    <p class="text-muted">
+                        True Positives (TP) are seeds that germinated
+                        and were correctly classified as germinated.
+                        True Negatives (TN) are seeds that did not
+                        germinate and were correctly classified.
+                    </p>
+
+                    <p class="text-muted mb-0">
+                        False Positives (FP) are seeds predicted as
+                        germinated when they did not germinate.
+                        False Negatives (FN) are seeds that germinated
+                        but were classified as not germinated.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <div class="dwr-card h-100 p-4">
+
+                    <h5 class="fw-bold">
+                        Model Performance
+                    </h5>
+
+                    <p class="text-muted">
+                        Accuracy measures the overall correctness of
+                        the model. Precision measures the reliability
+                        of positive predictions, while Recall measures
+                        how many actual germinated seeds were correctly
+                        identified.
+                    </p>
+
+                    <p class="text-muted mb-0">
+                        The F1-Score combines Precision and Recall into
+                        a single balanced metric.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Back button -->
+<section class="py-5">
+
+    <div class="container text-center">
+
+        <a
+            href="{{ url_for('logistic_regression_application') }}"
+            class="btn dwr-btn-primary"
+        >
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Application
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}
