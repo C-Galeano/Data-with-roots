@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+
+{% block title %}Application - Gradient Boosting Classifier{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- TITLE -->
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            Gradient Boosting Classifier
+        </span>
+
+        <h1 class="fw-bold">
+            Crop Disease Risk Classification
+        </h1>
+
+        <p class="lead text-muted">
+            Application of a Gradient Boosting Classifier to classify the
+            risk of disease outbreak in a crop field based on environmental
+            and soil conditions.
+        </p>
+    </div>
+
+
+    <!-- 1. PROBLEM CONTEXT -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                1. Problem Context
+            </h2>
+
+            <p>
+                Plant diseases, especially fungal ones, spread more easily
+                under certain environmental conditions: warm temperatures,
+                high humidity, and heavy rainfall create a favorable
+                environment for pathogens, while healthy, nutrient-rich soil
+                helps plants resist infection.
+            </p>
+
+            <p>
+                In this application, the phenomenon being analyzed is the
+                relationship between <strong>temperature, humidity, rainfall,
+                and soil nitrogen level</strong> recorded for a crop field on
+                a given day, and whether that field is at
+                <strong>high or low risk of a disease outbreak</strong>. Each
+                record represents one observation of a field under a set of
+                environmental conditions.
+            </p>
+
+            <p class="mb-0">
+                The purpose of applying a Gradient Boosting Classifier is to
+                learn the (often non-linear) combination of these four
+                conditions that leads to higher disease risk, and to classify
+                each new observation into one of two possible classes:
+                <strong>Low Risk</strong> or <strong>High Risk</strong>.
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- 2. VARIABLES -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-4">
+                2. Variables
+            </h2>
+
+            <div class="row g-4">
+
+                <!-- X -->
+                <div class="col-md-6">
+                    <div class="border rounded p-4 h-100">
+
+                        <h4 class="fw-bold">
+                            Independent Variables (X)
+                        </h4>
+
+                        <ul class="text-muted mb-0">
+                            <li class="mb-2">
+                                <strong>Temperature_C</strong> &middot;
+                                average field temperature, in Celsius.
+                            </li>
+                            <li class="mb-2">
+                                <strong>Humidity_Percent</strong> &middot;
+                                average relative humidity, in percentage.
+                            </li>
+                            <li class="mb-2">
+                                <strong>Rainfall_mm</strong> &middot;
+                                accumulated weekly rainfall, in millimeters.
+                            </li>
+                            <li class="mb-0">
+                                <strong>Soil_Nitrogen_Level</strong> &middot;
+                                soil nitrogen index, from 0 (poor) to 100
+                                (healthy).
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <!-- Y -->
+                <div class="col-md-6">
+                    <div class="border rounded p-4 h-100">
+
+                        <h4 class="fw-bold">
+                            Target Variable (Y)
+                        </h4>
+
+                        <p class="mb-2">
+                            <strong>Disease_Risk</strong> (binary)
+                        </p>
+
+                        <p class="text-muted mb-2">
+                            Indicates whether the field is at risk of a
+                            disease outbreak.
+                        </p>
+
+                        <p class="mb-1">
+                            <span class="badge bg-success">0</span> Low Risk
+                        </p>
+
+                        <p class="mb-0">
+                            <span class="badge bg-danger">1</span> High Risk
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 3. DATASET -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-4">
+                3. Dataset
+            </h2>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <p class="mb-2">
+                        <strong>Dataset:</strong>
+                        Crop Disease Risk Dataset
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Records:</strong>
+                        {{ total_records }} data records
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Source:</strong>
+                        Synthetically generated for this application, based
+                        on a realistic weighted relationship between
+                        environmental conditions and disease risk (see
+                        <code>data/generate_crop_disease_dataset.py</code>).
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <p class="mb-2">
+                        <strong>Independent variables:</strong><br>
+                        Temperature_C, Humidity_Percent, Rainfall_mm,
+                        Soil_Nitrogen_Level
+                    </p>
+
+                    <p class="mb-2">
+                        <strong>Target variable:</strong><br>
+                        Disease_Risk (0 = Low Risk, 1 = High Risk)
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Classes:</strong><br>
+                        Two possible classes, as described above.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="mt-4 p-3 rounded bg-light">
+                <p class="mb-0">
+                    The dataset is loaded from a CSV file using
+                    <strong>Pandas</strong> and contains four independent
+                    variables and one binary target variable, meeting the
+                    requirement of using three or more independent variables
+                    for the assigned classification model.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 4. TRAIN/TEST SPLIT + MODEL -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                4. Train/Test Split and Model Training
+            </h2>
+
+            <p>
+                Before training, the dataset is split into a training set
+                and a testing set using scikit-learn's
+                <code>train_test_split()</code>, so that the model's
+                performance can later be evaluated on data it has never
+                seen.
+            </p>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="p-3 border rounded text-center h-100">
+                        <div class="display-6 fw-bold text-success">80%</div>
+                        <p class="mb-0 text-muted">Training data</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded text-center h-100">
+                        <div class="display-6 fw-bold text-success">20%</div>
+                        <p class="mb-0 text-muted">Testing data</p>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                The model is implemented in Python using the
+                <strong>scikit-learn</strong>
+                <code>GradientBoostingClassifier</code> class, trained on all
+                four independent variables using only the training split.
+            </p>
+
+            <div class="bg-light rounded p-3">
+                <p class="mb-1">
+                    <strong>Process:</strong>
+                </p>
+                <p class="mb-0">
+                    CSV Dataset → Pandas → X (4 variables) and y → 80/20
+                    Split → GradientBoostingClassifier().fit() →
+                    model.predict() → Evaluation → New Classifications
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 5. CLASSIFICATION FORM -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                5. Classification Form
+            </h2>
+
+            <p class="text-muted">
+                Enter the four field conditions to classify the disease risk.
+            </p>
+
+            <form method="post">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label for="temperature" class="form-label">
+                            Temperature (&deg;C)
+                        </label>
+                        <input
+                            type="number"
+                            step="any"
+                            min="0"
+                            name="temperature"
+                            id="temperature"
+                            class="form-control"
+                            placeholder="Example: 28"
+                            required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="humidity" class="form-label">
+                            Humidity (%)
+                        </label>
+                        <input
+                            type="number"
+                            step="any"
+                            min="0"
+                            max="100"
+                            name="humidity"
+                            id="humidity"
+                            class="form-control"
+                            placeholder="Example: 75"
+                            required>
+                        <div class="form-text">
+                            Between 0 and 100.
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="rainfall" class="form-label">
+                            Rainfall (mm, weekly)
+                        </label>
+                        <input
+                            type="number"
+                            step="any"
+                            min="0"
+                            name="rainfall"
+                            id="rainfall"
+                            class="form-control"
+                            placeholder="Example: 60"
+                            required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="nitrogen" class="form-label">
+                            Soil Nitrogen Level
+                        </label>
+                        <input
+                            type="number"
+                            step="any"
+                            min="0"
+                            max="100"
+                            name="nitrogen"
+                            id="nitrogen"
+                            class="form-control"
+                            placeholder="Example: 50"
+                            required>
+                        <div class="form-text">
+                            Index from 0 (poor) to 100 (healthy).
+                        </div>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn dwr-btn-primary w-100 mt-4">
+                    Classify
+                </button>
+
+            </form>
+
+            {% if error %}
+            <div class="alert alert-danger mt-4 text-center mb-0">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <!-- PREDICTION RESULT -->
+            {% if predicted_label %}
+
+            <div class="alert {{ 'alert-danger' if predicted_class == 1 else 'alert-success' }} mt-4 text-center">
+
+                <h5 class="mb-2">
+                    Predicted Class
+                </h5>
+
+                <p class="fs-3 fw-bold mb-1">
+                    {{ predicted_class }} &middot; {{ predicted_label }}
+                </p>
+
+                <p class="mb-0">
+                    Estimated probability of high risk: <strong>{{ probability }}%</strong>
+                </p>
+
+                <p class="mb-0 mt-2 small">
+                    {% if predicted_class == 1 %}
+                        The model estimates that, under these conditions, the
+                        field is more likely to be at high risk of a disease
+                        outbreak.
+                    {% else %}
+                        The model estimates that, under these conditions, the
+                        field is more likely to be at low risk of a disease
+                        outbreak.
+                    {% endif %}
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+
+    <!-- 6. DATA VISUALIZATION -->
+    {% if plot_url %}
+
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4 text-center">
+
+            <h2 class="fw-bold mb-2">
+                6. Data Visualization
+            </h2>
+
+            <p class="text-muted mb-4">
+                Observations grouped by classification label (Low Risk /
+                High Risk), plotted against Temperature and Humidity, the
+                two variables most associated with fungal disease
+                conditions, together with your prediction. Note that the
+                model was trained using all four independent variables, not
+                only the two shown here.
+            </p>
+
+            <img
+                src="data:image/png;base64,{{ plot_url }}"
+                class="img-fluid"
+                alt="Gradient Boosting Classifier Plot">
+
+        </div>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

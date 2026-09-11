@@ -8,7 +8,16 @@ import base64
 
 
 from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import train_test_split
+
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    confusion_matrix
+)
 
 app = Flask(__name__)
 
@@ -23,10 +32,7 @@ model = LinearRegression()
 model.fit(x, y)
 
 
-# --- Supervised: Logistic Regression (data setup) -----------------------
-# Topic: Seed Germination Prediction
-# Independent variable: Soil_Moisture_Percent
-# Target variable (binary): Germinated (0 = No, 1 = Yes)
+# --- Supervised: Logistic Regression (data setup) ---
 
 logreg_df = pd.read_csv("data/seed_germination.csv")
 
@@ -42,12 +48,284 @@ logreg_x_train, logreg_x_test, logreg_y_train, logreg_y_test = train_test_split(
 logreg_model = LogisticRegression()
 logreg_model.fit(logreg_x_train, logreg_y_train)
 
+# --- Logistic Regression Evaluation ---
+
+logreg_y_pred = logreg_model.predict(logreg_x_test)
+
+logreg_cm = confusion_matrix(logreg_y_test, logreg_y_pred)
+
+logreg_accuracy = accuracy_score(logreg_y_test, logreg_y_pred)
+
+logreg_precision = precision_score(
+    logreg_y_test,
+    logreg_y_pred,
+    zero_division=0
+)
+
+logreg_recall = recall_score(
+    logreg_y_test,
+    logreg_y_pred,
+    zero_division=0
+)
+
+logreg_f1 = f1_score(
+    logreg_y_test,
+    logreg_y_pred,
+    zero_division=0
+)
+
+def create_logreg_confusion_matrix():
+    cm = logreg_cm
+
+    plt.figure(figsize=(7, 5))
+
+    plt.imshow(
+        cm,
+        interpolation="nearest",
+        cmap="Blues"
+    )
+
+    plt.title("Logistic Regression - Confusion Matrix")
+    plt.colorbar()
+
+    classes = [
+        "Not Germinated (0)",
+        "Germinated (1)"
+    ]
+
+    plt.xticks(
+        [0, 1],
+        classes,
+        rotation=20
+    )
+
+    plt.yticks(
+        [0, 1],
+        classes
+    )
+
+    plt.xlabel("Predicted Class")
+    plt.ylabel("Actual Class")
+
+    threshold = cm.max() / 2
+
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(
+                j,
+                i,
+                cm[i, j],
+                horizontalalignment="center",
+                verticalalignment="center",
+                color="white" if cm[i, j] > threshold else "black",
+                fontsize=14,
+                fontweight="bold"
+            )
+
+    plt.tight_layout()
+
+    img = io.BytesIO()
+
+    plt.savefig(
+        img,
+        format="png",
+        bbox_inches="tight"
+    )
+
+    img.seek(0)
+
+    plot_url = base64.b64encode(
+        img.getvalue()
+    ).decode("utf8")
+
+    plt.close()
+
+    return plot_url
+
 
 def classifyGermination(soil_moisture):
     input_df = pd.DataFrame({"Soil_Moisture_Percent": [soil_moisture]})
     predicted_class = int(logreg_model.predict(input_df)[0])
     probability = logreg_model.predict_proba(input_df)[0][1]
     return predicted_class, round(probability * 100, 1)
+
+
+# --- Supervised: Gradient Boosting Classifier ----
+GBC_FEATURES = [
+    "Temperature_C",
+    "Humidity_Percent",
+    "Rainfall_mm",
+    "Soil_Nitrogen_Level",
+]
+
+gbc_df = pd.read_csv("data/crop_disease_risk.csv")
+
+gbc_total_records = len(gbc_df)
+
+gbc_x = gbc_df[GBC_FEATURES]
+gbc_y = gbc_df["Disease_Risk"]
+
+gbc_x_train, gbc_x_test, gbc_y_train, gbc_y_test = train_test_split(
+    gbc_x, gbc_y, test_size=0.2, random_state=42
+)
+
+gbc_model = GradientBoostingClassifier(random_state=42)
+gbc_model.fit(gbc_x_train, gbc_y_train)
+
+# --- Gradient Boosting Classifier Evaluation ---
+
+gbc_y_pred = gbc_model.predict(gbc_x_test)
+
+gbc_cm = confusion_matrix(gbc_y_test, gbc_y_pred)
+
+gbc_accuracy = accuracy_score(gbc_y_test, gbc_y_pred)
+
+gbc_precision = precision_score(
+    gbc_y_test,
+    gbc_y_pred,
+    zero_division=0
+)
+
+gbc_recall = recall_score(
+    gbc_y_test,
+    gbc_y_pred,
+    zero_division=0
+)
+
+gbc_f1 = f1_score(
+    gbc_y_test,
+    gbc_y_pred,
+    zero_division=0
+)
+
+
+def create_gbc_confusion_matrix():
+    cm = gbc_cm
+
+    plt.figure(figsize=(7, 5))
+
+    plt.imshow(
+        cm,
+        interpolation="nearest",
+        cmap="Blues"
+    )
+
+    plt.title("Gradient Boosting Classifier - Confusion Matrix")
+    plt.colorbar()
+
+    classes = [
+        "Low Risk (0)",
+        "High Risk (1)"
+    ]
+
+    plt.xticks(
+        [0, 1],
+        classes,
+        rotation=20
+    )
+
+    plt.yticks(
+        [0, 1],
+        classes
+    )
+
+    plt.xlabel("Predicted Class")
+    plt.ylabel("Actual Class")
+
+    threshold = cm.max() / 2
+
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(
+                j,
+                i,
+                cm[i, j],
+                horizontalalignment="center",
+                verticalalignment="center",
+                color="white" if cm[i, j] > threshold else "black",
+                fontsize=14,
+                fontweight="bold"
+            )
+
+    plt.tight_layout()
+
+    img = io.BytesIO()
+
+    plt.savefig(
+        img,
+        format="png",
+        bbox_inches="tight"
+    )
+
+    img.seek(0)
+
+    plot_url = base64.b64encode(
+        img.getvalue()
+    ).decode("utf8")
+
+    plt.close()
+
+    return plot_url
+
+
+def classifyDiseaseRisk(temperature, humidity, rainfall, nitrogen):
+    input_df = pd.DataFrame({
+        "Temperature_C": [temperature],
+        "Humidity_Percent": [humidity],
+        "Rainfall_mm": [rainfall],
+        "Soil_Nitrogen_Level": [nitrogen],
+    })
+    predicted_class = int(gbc_model.predict(input_df)[0])
+    probability = gbc_model.predict_proba(input_df)[0][1]
+    return predicted_class, round(probability * 100, 1)
+
+
+def create_gbc_plot(temperature=None, humidity=None, predicted_class=None):
+    plt.figure(figsize=(8, 5))
+
+    low_risk = gbc_df[gbc_df["Disease_Risk"] == 0]
+    high_risk = gbc_df[gbc_df["Disease_Risk"] == 1]
+
+    plt.scatter(
+        low_risk["Temperature_C"],
+        low_risk["Humidity_Percent"],
+        alpha=0.5,
+        color="seagreen",
+        label="Low Risk (0)"
+    )
+    plt.scatter(
+        high_risk["Temperature_C"],
+        high_risk["Humidity_Percent"],
+        alpha=0.5,
+        color="firebrick",
+        label="High Risk (1)"
+    )
+
+    if temperature is not None and humidity is not None:
+        plt.scatter(
+            temperature,
+            humidity,
+            s=180,
+            color="black",
+            marker="X",
+            zorder=5,
+            label="Your prediction"
+        )
+
+    plt.xlabel("Temperature (C)")
+    plt.ylabel("Humidity (%)")
+    plt.title("Gradient Boosting: Temperature vs Humidity by Disease Risk")
+    plt.legend(loc="upper right")
+    plt.grid(alpha=0.3)
+
+    img = io.BytesIO()
+    plt.savefig(img, format="png", bbox_inches="tight")
+    img.seek(0)
+
+    plot_url = base64.b64encode(img.getvalue()).decode("utf8")
+    plt.close()
+
+    return plot_url
 
 
 def create_logreg_plot(soil_moisture=None, predicted_class=None):
@@ -118,11 +396,9 @@ def calculateCustomers(marketing_spend):
 def create_plot(marketing_spend=None, predicted_customers=None):
     plt.figure(figsize=(8, 5))
 
-    # Mostrar 500 datos reales del dataset
     x_plot = x.head(500)
     y_plot = y.head(500)
 
-    # Datos reales (con transparencia para que no se amontonen)
     plt.scatter(
         x_plot["Marketing_Spend_Per_Day"],
         y_plot["Number_of_Customers_Per_Day"],
@@ -131,7 +407,6 @@ def create_plot(marketing_spend=None, predicted_customers=None):
         label="Datos reales"
     )
 
-    # Rango completo de X del dataset (ordenado para trazar bien la recta)
     x_line = pd.DataFrame({
         "Marketing_Spend_Per_Day": [
             x["Marketing_Spend_Per_Day"].min(),
@@ -139,10 +414,8 @@ def create_plot(marketing_spend=None, predicted_customers=None):
         ]
     })
 
-    # Valores Y calculados por el modelo de regresión lineal
     y_line = model.predict(x_line)
 
-    # Recta de regresión (más gruesa y en color contrastante)
     plt.plot(
         x_line["Marketing_Spend_Per_Day"],
         y_line,
@@ -151,7 +424,6 @@ def create_plot(marketing_spend=None, predicted_customers=None):
         label="Recta de regresión"
     )
 
-    # Predicción realizada por el usuario (marcador distinto y visible)
     if marketing_spend is not None and predicted_customers is not None:
         plt.scatter(
             marketing_spend,
@@ -179,14 +451,14 @@ def create_plot(marketing_spend=None, predicted_customers=None):
     return plot_url
 
 
-# --- Home -------------------------------------------------------------
+# --- Home -------
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
 
-# --- Machine Learning ---------------------------------------------------
+# --- Machine Learning ------
 
 @app.route("/ml/concepts")
 def ml_concepts():
@@ -198,7 +470,7 @@ def ml_types():
     return render_template("ml/types.html")
 
 
-# --- Use Cases ------------------------------------------------------------
+# --- Use Cases ------
 
 @app.route("/use-cases/1")
 def use_case_1():
@@ -220,7 +492,7 @@ def use_case_4():
     return render_template("use_cases/use_case_4.html")
 
 
-# --- Supervised: Linear Regression --------------------------------------
+# --- Supervised: Linear Regression --
 
 @app.route("/regression/concepts")
 def regression_concepts():
@@ -252,7 +524,7 @@ def regression_application():
     )
 
 
-# --- Supervised: Logistic Regression ------------------------------------
+# --- Supervised: Logistic Regression --
 
 @app.route("/logistic-regression/concepts")
 def logistic_regression_concepts():
@@ -289,6 +561,103 @@ def logistic_regression_application():
         plot_url=plot_url,
         error=error,
         total_records=logreg_total_records
+    )
+
+@app.route("/logistic-regression/evaluation")
+def logistic_regression_evaluation():
+
+    tn, fp, fn, tp = logreg_cm.ravel()
+
+    plot_url = create_logreg_confusion_matrix()
+
+    return render_template(
+        "logistic_regression/evaluation.html",
+        total_records=logreg_total_records,
+        train_records=len(logreg_x_train),
+        test_records=len(logreg_x_test),
+        accuracy=logreg_accuracy,
+        precision=logreg_precision,
+        recall=logreg_recall,
+        f1=logreg_f1,
+        tn=tn,
+        fp=fp,
+        fn=fn,
+        tp=tp,
+        plot_url=plot_url
+    )
+
+
+# --- Supervised: Gradient Boosting Classifier ----
+
+@app.route("/gradient-boosting/concepts")
+def gradient_boosting_concepts():
+    return render_template("gradient_boosting/concepts.html")
+
+
+@app.route("/gradient-boosting/application", methods=["GET", "POST"])
+def gradient_boosting_application():
+    predicted_class = None
+    predicted_label = None
+    probability = None
+    plot_url = None
+    error = None
+    temperature = None
+    humidity = None
+
+    if request.method == "POST":
+        temperature = request.form.get("temperature")
+        humidity = request.form.get("humidity")
+        rainfall = request.form.get("rainfall")
+        nitrogen = request.form.get("nitrogen")
+
+        if temperature and humidity and rainfall and nitrogen:
+            temperature = float(temperature)
+            humidity = float(humidity)
+            rainfall = float(rainfall)
+            nitrogen = float(nitrogen)
+
+            if 0 <= humidity <= 100 and 0 <= nitrogen <= 100 and rainfall >= 0:
+                predicted_class, probability = classifyDiseaseRisk(
+                    temperature, humidity, rainfall, nitrogen
+                )
+                predicted_label = "High Risk" if predicted_class == 1 else "Low Risk"
+
+                plot_url = create_gbc_plot(temperature, humidity, predicted_class)
+            else:
+                error = "Humidity and Nitrogen must be between 0 and 100, and Rainfall must be 0 or greater."
+
+    return render_template(
+        "gradient_boosting/application.html",
+        predicted_class=predicted_class,
+        predicted_label=predicted_label,
+        probability=probability,
+        plot_url=plot_url,
+        error=error,
+        total_records=gbc_total_records
+    )
+
+
+@app.route("/gradient-boosting/evaluation")
+def gradient_boosting_evaluation():
+
+    tn, fp, fn, tp = gbc_cm.ravel()
+
+    plot_url = create_gbc_confusion_matrix()
+
+    return render_template(
+        "gradient_boosting/evaluation.html",
+        total_records=gbc_total_records,
+        train_records=len(gbc_x_train),
+        test_records=len(gbc_x_test),
+        accuracy=gbc_accuracy,
+        precision=gbc_precision,
+        recall=gbc_recall,
+        f1=gbc_f1,
+        tn=tn,
+        fp=fp,
+        fn=fn,
+        tp=tp,
+        plot_url=plot_url
     )
 
 
