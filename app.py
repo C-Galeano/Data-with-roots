@@ -172,6 +172,101 @@ gbc_x_train, gbc_x_test, gbc_y_train, gbc_y_test = train_test_split(
 gbc_model = GradientBoostingClassifier(random_state=42)
 gbc_model.fit(gbc_x_train, gbc_y_train)
 
+# --- Gradient Boosting Classifier Evaluation ---
+
+gbc_y_pred = gbc_model.predict(gbc_x_test)
+
+gbc_cm = confusion_matrix(gbc_y_test, gbc_y_pred)
+
+gbc_accuracy = accuracy_score(gbc_y_test, gbc_y_pred)
+
+gbc_precision = precision_score(
+    gbc_y_test,
+    gbc_y_pred,
+    zero_division=0
+)
+
+gbc_recall = recall_score(
+    gbc_y_test,
+    gbc_y_pred,
+    zero_division=0
+)
+
+gbc_f1 = f1_score(
+    gbc_y_test,
+    gbc_y_pred,
+    zero_division=0
+)
+
+
+def create_gbc_confusion_matrix():
+    cm = gbc_cm
+
+    plt.figure(figsize=(7, 5))
+
+    plt.imshow(
+        cm,
+        interpolation="nearest",
+        cmap="Blues"
+    )
+
+    plt.title("Gradient Boosting Classifier - Confusion Matrix")
+    plt.colorbar()
+
+    classes = [
+        "Low Risk (0)",
+        "High Risk (1)"
+    ]
+
+    plt.xticks(
+        [0, 1],
+        classes,
+        rotation=20
+    )
+
+    plt.yticks(
+        [0, 1],
+        classes
+    )
+
+    plt.xlabel("Predicted Class")
+    plt.ylabel("Actual Class")
+
+    threshold = cm.max() / 2
+
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(
+                j,
+                i,
+                cm[i, j],
+                horizontalalignment="center",
+                verticalalignment="center",
+                color="white" if cm[i, j] > threshold else "black",
+                fontsize=14,
+                fontweight="bold"
+            )
+
+    plt.tight_layout()
+
+    img = io.BytesIO()
+
+    plt.savefig(
+        img,
+        format="png",
+        bbox_inches="tight"
+    )
+
+    img.seek(0)
+
+    plot_url = base64.b64encode(
+        img.getvalue()
+    ).decode("utf8")
+
+    plt.close()
+
+    return plot_url
+
 
 def classifyDiseaseRisk(temperature, humidity, rainfall, nitrogen):
     input_df = pd.DataFrame({
@@ -539,6 +634,30 @@ def gradient_boosting_application():
         plot_url=plot_url,
         error=error,
         total_records=gbc_total_records
+    )
+
+
+@app.route("/gradient-boosting/evaluation")
+def gradient_boosting_evaluation():
+
+    tn, fp, fn, tp = gbc_cm.ravel()
+
+    plot_url = create_gbc_confusion_matrix()
+
+    return render_template(
+        "gradient_boosting/evaluation.html",
+        total_records=gbc_total_records,
+        train_records=len(gbc_x_train),
+        test_records=len(gbc_x_test),
+        accuracy=gbc_accuracy,
+        precision=gbc_precision,
+        recall=gbc_recall,
+        f1=gbc_f1,
+        tn=tn,
+        fp=fp,
+        fn=fn,
+        tp=tp,
+        plot_url=plot_url
     )
 
 
