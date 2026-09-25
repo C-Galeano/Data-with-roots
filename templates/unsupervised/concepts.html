@@ -1,0 +1,511 @@
+{% extends "base.html" %}
+
+{% block title %}Concepts - Unsupervised Machine Learning{% endblock %}
+
+{% block content %}
+
+<!-- Hero section -->
+<section class="dwr-hero text-white">
+    <div class="container py-5">
+        <div class="text-center py-5">
+            <span class="badge rounded-pill dwr-badge mb-3">
+                Unsupervised Learning
+            </span>
+
+            <h1 class="display-4 fw-bold text-white mb-3">
+                Clustering with K-Means: Concepts
+            </h1>
+
+            <p class="lead text-white-50 col-lg-8 mx-auto mb-0">
+                How a model can find groups in data when nobody tells it
+                what the groups are.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<!-- What is unsupervised learning? -->
+<section class="container py-5">
+    <div class="row align-items-center g-5">
+
+        <div class="col-lg-7">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                01 · Fundamentals
+            </span>
+
+            <h2 class="fw-bold mb-3">
+                What is Unsupervised Learning?
+            </h2>
+
+            <p class="text-muted">
+                Unsupervised learning is a branch of Machine Learning in which
+                the model works with data that has <strong>no target
+                variable</strong>. There is no column that says what the
+                correct answer is, so the model cannot learn by comparing its
+                predictions with known labels.
+            </p>
+
+            <p class="text-muted mb-0">
+                Instead, the algorithm looks for <strong>structure hidden in
+                the data itself</strong>: groups of similar observations,
+                unusual records, or a simpler way to represent many variables.
+                It is useful when labels are expensive or impossible to get,
+                or when the goal is to explore the data and discover patterns
+                that nobody has defined yet.
+            </p>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-search dwr-icon"></i>
+                    </div>
+
+                    <h5 class="fw-bold text-center">
+                        Main Idea
+                    </h5>
+
+                    <p class="text-muted text-center mb-0">
+                        Learn from the inputs alone and let the data reveal
+                        its own organization.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Supervised vs unsupervised -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                02 · Comparison
+            </span>
+
+            <h2 class="fw-bold">
+                Supervised vs. Unsupervised Learning
+            </h2>
+
+            <p class="text-muted col-lg-8 mx-auto">
+                The previous modules of this project (Linear Regression,
+                Logistic Regression and Gradient Boosting) were supervised:
+                every record had a known answer. This module removes that
+                answer.
+            </p>
+        </div>
+
+        <div class="table-responsive col-lg-10 mx-auto">
+            <table class="table table-bordered bg-white align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Aspect</th>
+                        <th scope="col">Supervised learning</th>
+                        <th scope="col">Unsupervised learning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Data</th>
+                        <td>Inputs (X) and a known target (Y)</td>
+                        <td>Inputs (X) only, no target</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Goal</th>
+                        <td>Predict a value or a class for new records</td>
+                        <td>Discover groups or structure in the data</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Evaluation</th>
+                        <td>Compare predictions with real answers (accuracy, R², F1)</td>
+                        <td>Measure how compact and separated the groups are (WCSS, silhouette)</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Example in agriculture</th>
+                        <td>Predict whether a seed will germinate</td>
+                        <td>Find irrigation profiles among seed trays</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Clustering -->
+<section class="container py-5">
+    <div class="row align-items-center g-5">
+
+        <div class="col-lg-5 order-lg-1 order-2">
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-3">
+                            <i class="bi bi-people dwr-icon"></i>
+                            <h6 class="fw-bold mt-2">Customer segments</h6>
+                            <p class="text-muted small mb-0">Group buyers with similar habits.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-3">
+                            <i class="bi bi-flower1 dwr-icon"></i>
+                            <h6 class="fw-bold mt-2">Crop profiles</h6>
+                            <p class="text-muted small mb-0">Group fields by soil and climate.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-3">
+                            <i class="bi bi-image dwr-icon"></i>
+                            <h6 class="fw-bold mt-2">Image compression</h6>
+                            <p class="text-muted small mb-0">Group similar pixel colors.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-3">
+                            <i class="bi bi-exclamation-triangle dwr-icon"></i>
+                            <h6 class="fw-bold mt-2">Anomaly detection</h6>
+                            <p class="text-muted small mb-0">Spot records far from every group.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 order-lg-2 order-1">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                03 · Clustering
+            </span>
+
+            <h2 class="fw-bold mb-3">
+                What is Clustering?
+            </h2>
+
+            <p class="text-muted">
+                Clustering is the most common unsupervised task. It divides a
+                dataset into <strong>groups called clusters</strong>, so that
+                records inside the same cluster are similar to each other and
+                records in different clusters are different.
+            </p>
+
+            <p class="text-muted mb-0">
+                Similarity is usually measured as a <strong>distance</strong>
+                between records: two records that are close in the space of
+                the variables are considered similar. The clusters have no
+                names at the start; it is the analyst who interprets them
+                afterwards by looking at their characteristics.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- How K-Means works -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                04 · The Algorithm
+            </span>
+
+            <h2 class="fw-bold">
+                How Does K-Means Work?
+            </h2>
+
+            <p class="text-muted col-lg-8 mx-auto">
+                K-Means splits the data into exactly <strong>k</strong>
+                clusters, where k is chosen by the analyst. Each cluster is
+                represented by one point, its centroid, and the algorithm
+                repeats the same steps until the clusters stop changing.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="display-6 fw-bold text-success">1</div>
+                        <h5 class="fw-bold mt-2">Choose k and initial centroids</h5>
+                        <p class="text-muted small mb-0">
+                            Decide how many clusters to look for and place k
+                            starting centroids, either by hand, at random, or
+                            with a smarter method such as k-means++.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="display-6 fw-bold text-success">2</div>
+                        <h5 class="fw-bold mt-2">Measure distances</h5>
+                        <p class="text-muted small mb-0">
+                            Calculate the Euclidean distance from every record
+                            to every centroid.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="display-6 fw-bold text-success">3</div>
+                        <h5 class="fw-bold mt-2">Assign each record</h5>
+                        <p class="text-muted small mb-0">
+                            Each record joins the cluster of its nearest
+                            centroid.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="display-6 fw-bold text-success">4</div>
+                        <h5 class="fw-bold mt-2">Update the centroids</h5>
+                        <p class="text-muted small mb-0">
+                            Move each centroid to the average of the records
+                            assigned to it, then go back to step 2.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4 col-lg-8 mx-auto">
+            <div class="card-body p-4 text-center">
+                <h6 class="fw-bold mb-2">Euclidean distance between a record and a centroid</h6>
+                <p class="fs-5 mb-2">
+                    d(x, C) = &radic;( (x<sub>1</sub> &minus; C<sub>1</sub>)<sup>2</sup>
+                    + (x<sub>2</sub> &minus; C<sub>2</sub>)<sup>2</sup> + &hellip; )
+                </p>
+                <p class="text-muted small mb-0">
+                    It is the straight-line distance between two points. Because
+                    it depends on the units of each variable, variables on very
+                    different scales should be standardized first.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Centroids and iterations -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            05 · Centroids and Iterations
+        </span>
+
+        <h2 class="fw-bold">
+            The Role of Centroids and Iterations
+        </h2>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm dwr-card">
+                <div class="card-body p-4">
+                    <i class="bi bi-bullseye dwr-icon"></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Centroids
+                    </h5>
+
+                    <p class="text-muted small">
+                        A centroid is the center of a cluster: the average of
+                        the coordinates of all the records that belong to it.
+                        It does not need to be a real record.
+                    </p>
+
+                    <p class="text-muted small mb-0">
+                        Centroids have two jobs. They decide which records
+                        belong to each cluster (every record goes to its nearest
+                        centroid), and at the end they <strong>summarize</strong>
+                        each cluster: reading a centroid's coordinates tells you
+                        what a typical member of that group looks like.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm dwr-card">
+                <div class="card-body p-4">
+                    <i class="bi bi-arrow-repeat dwr-icon"></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Iterations
+                    </h5>
+
+                    <p class="text-muted small">
+                        One iteration is a full round of the loop: measure
+                        distances, assign records and move the centroids. After
+                        each move, some records may be closer to a different
+                        centroid, so they change cluster in the next round.
+                    </p>
+
+                    <p class="text-muted small mb-0">
+                        The algorithm <strong>converges</strong> when no record
+                        changes cluster, so the centroids stop moving. The
+                        first iterations usually produce the biggest changes;
+                        later ones only make small corrections.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Objective and evaluation -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                06 · Evaluation
+            </span>
+
+            <h2 class="fw-bold">
+                How Do We Know the Clusters Are Good?
+            </h2>
+
+            <p class="text-muted col-lg-8 mx-auto">
+                Without real labels, clustering is evaluated by looking at the
+                shape of the groups: members of a cluster should be close
+                together, and different clusters should be far apart.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-arrows-collapse dwr-icon"></i>
+                        <h5 class="fw-bold mt-3">WCSS (within-cluster variance)</h5>
+                        <p class="text-muted small mb-0">
+                            The sum of the squared distances from every record
+                            to its centroid. K-Means tries to make it as small
+                            as possible, and it never increases from one
+                            iteration to the next. Lower means more compact
+                            clusters.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-graph-down dwr-icon"></i>
+                        <h5 class="fw-bold mt-3">Elbow method</h5>
+                        <p class="text-muted small mb-0">
+                            WCSS always falls when k grows, so it cannot choose
+                            k by itself. Plotting WCSS for several values of k
+                            shows a point, the elbow, after which adding more
+                            clusters barely helps. That point is a good k.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-rulers dwr-icon"></i>
+                        <h5 class="fw-bold mt-3">Silhouette score</h5>
+                        <p class="text-muted small mb-0">
+                            Compares, for each record, how close it is to its
+                            own cluster versus the nearest other cluster. It
+                            ranges from &minus;1 to 1: values near 1 mean
+                            well-separated clusters, near 0 overlapping ones,
+                            and negative values suggest misassigned records.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Strengths and limitations -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            07 · Strengths and Limitations
+        </span>
+
+        <h2 class="fw-bold">
+            When to Use K-Means
+        </h2>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-check-circle text-success me-2"></i>Strengths</h5>
+                    <ul class="text-muted small mb-0">
+                        <li class="mb-2">Simple to understand and to explain to non-technical people.</li>
+                        <li class="mb-2">Fast, even with thousands of records.</li>
+                        <li class="mb-2">Centroids give a clear summary of each group.</li>
+                        <li>Works well when the groups are compact and roughly round.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-exclamation-circle text-warning me-2"></i>Limitations</h5>
+                    <ul class="text-muted small mb-0">
+                        <li class="mb-2">The number of clusters k must be chosen in advance.</li>
+                        <li class="mb-2">Different initial centroids can lead to different results.</li>
+                        <li class="mb-2">Sensitive to outliers and to the scale of the variables.</li>
+                        <li>Struggles with elongated or irregular cluster shapes.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{{ url_for('unsupervised_manual') }}" class="btn dwr-btn-primary btn-lg me-2 mb-2">
+            See the Manual Exercise
+        </a>
+        <a href="{{ url_for('unsupervised_clustering') }}" class="btn dwr-btn-outline btn-lg mb-2">
+            Go to the Clustering Application
+        </a>
+    </div>
+</section>
+
+{% endblock %}

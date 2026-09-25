@@ -1,0 +1,538 @@
+{% extends "base.html" %}
+
+{% block title %}Manual Exercise - K-Means{% endblock %}
+
+{% block content %}
+
+{% set profiles = {
+    "C1": {"name": "Under-watered trays", "icon": "bi-droplet",
+           "text": "Dry substrate and the lowest germination. The seeds do not absorb enough water to break dormancy.",
+           "action": "Increase irrigation frequency."},
+    "C2": {"name": "Over-watered trays", "icon": "bi-cloud-rain-heavy",
+           "text": "Waterlogged substrate with medium germination. Excess water lowers oxygen and makes seeds rot, so germination falls even though water is plentiful. It has the largest variance because the damage depends on how saturated each tray is.",
+           "action": "Reduce watering or improve drainage."},
+    "C3": {"name": "Well-watered (optimal) trays", "icon": "bi-flower1",
+           "text": "Moderate moisture and the highest germination. It is a compact cluster, so these trays behave consistently.",
+           "action": "Use this irrigation routine as the nursery's reference."}
+} %}
+
+{% set iteration_notes = {
+    1: "The initial centroids were placed on purpose away from the visual centers of the groups. C1 starts between the dry trays and the high-germination trays, so it captures 50 trays from two different groups, and C3 starts too far to the right and splits the high-germination group with C1.",
+    2: "The centroids calculated in iteration 1 are now used. C3 moves left and takes the high-germination trays, C2 keeps the wet trays and C1 moves down to the dry trays. The three natural groups are now almost fully separated.",
+    3: "Only tray T012 = (36.6, 68.9) changes cluster: it moves from C1 to C3. C2 does not change at all. A 4th iteration produces exactly the same assignments, so the algorithm has converged."
+} %}
+
+
+<!-- Hero section -->
+<section class="dwr-hero text-white">
+    <div class="container py-5">
+        <div class="text-center py-5">
+            <span class="badge rounded-pill dwr-badge mb-3">
+                Unsupervised Learning
+            </span>
+
+            <h1 class="display-4 fw-bold text-white mb-3">
+                K-Means by Hand: Manual Exercise
+            </h1>
+
+            <p class="lead text-white-50 col-lg-8 mx-auto mb-0">
+                Three iterations of K-Means on 100 seed trays, calculated step
+                by step without Scikit-learn so every distance and centroid
+                can be traced.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<!-- 01 Dataset -->
+<section class="container py-5">
+    <div class="row g-5">
+
+        <div class="col-lg-6">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                01 · Dataset
+            </span>
+
+            <h2 class="fw-bold mb-3">
+                Context of the Data
+            </h2>
+
+            <p class="text-muted">
+                A plant nursery sows <strong>{{ dataset_stats.records }} seed
+                trays</strong> under different irrigation routines. Fourteen
+                days after sowing, two measurements are taken from each tray.
+            </p>
+
+            <p class="text-muted">
+                Moisture is one of the main drivers of germination. Seeds need
+                water to start growing, but too much water pushes out oxygen
+                and makes them rot, so the relationship is not linear. The
+                nursery wants to know which irrigation profiles exist among its
+                trays. There is no label to predict, which makes this a
+                clustering problem.
+            </p>
+
+            <p class="text-muted mb-0">
+                Both variables are percentages on the same 0&ndash;100 scale,
+                so the Euclidean distance can be calculated directly without
+                normalizing the data.
+            </p>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Variables</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>Meaning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>Soil_Moisture_Percent</code> (x)</td>
+                                    <td class="small text-muted">Average volumetric moisture of the tray's substrate. Low values mean dry soil, high values mean waterlogged soil.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>Germination_Rate_Percent</code> (y)</td>
+                                    <td class="small text-muted">Percentage of the seeds in the tray that germinated.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Summary statistics</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm text-center align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-start">Variable</th>
+                                    <th>Min</th>
+                                    <th>Mean</th>
+                                    <th>Max</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">Soil moisture (%)</td>
+                                    <td>{{ "%.1f"|format(dataset_stats.x_min) }}</td>
+                                    <td>{{ "%.1f"|format(dataset_stats.x_mean) }}</td>
+                                    <td>{{ "%.1f"|format(dataset_stats.x_max) }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Germination rate (%)</td>
+                                    <td>{{ "%.1f"|format(dataset_stats.y_min) }}</td>
+                                    <td>{{ "%.1f"|format(dataset_stats.y_mean) }}</td>
+                                    <td>{{ "%.1f"|format(dataset_stats.y_max) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- 02 Initial centroids -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-5">
+                <span class="badge rounded-pill dwr-section-badge mb-3">
+                    02 · Initial Centroids
+                </span>
+
+                <h2 class="fw-bold mb-3">
+                    Starting Point: k = 3
+                </h2>
+
+                <p class="text-muted">
+                    The three initial centroids were chosen by hand, spread
+                    across the plane and deliberately <strong>not</strong> at
+                    the visual centers of the groups, so the iterations show
+                    how the algorithm corrects them.
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered bg-white text-center align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Centroid</th>
+                                <th>Soil moisture (%)</th>
+                                <th>Germination (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in initial_centroids %}
+                            <tr>
+                                <td class="fw-semibold">
+                                    <span class="dwr-cluster-dot" style="background-color: {{ colors[loop.index0] }};"></span>
+                                    C{{ loop.index }}
+                                </td>
+                                <td>{{ "%.2f"|format(c[0]) }}</td>
+                                <td>{{ "%.2f"|format(c[1]) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <img src="{{ url_for('static', filename='images/kmeans_manual/initial_centroids.png') }}"
+                             class="img-fluid rounded"
+                             alt="Scatter plot of the 100 seed trays and the 3 initial centroids">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- 03 Iterations -->
+<section class="container py-5">
+    <div class="text-center mb-4">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            03 · Iterations
+        </span>
+
+        <h2 class="fw-bold">
+            Three Iterations Step by Step
+        </h2>
+
+        <p class="text-muted col-lg-8 mx-auto">
+            In each iteration, the distance from every tray to the three
+            current centroids is calculated, each tray is assigned to its
+            nearest centroid (the smallest distance is highlighted), and the
+            centroids are moved to the average of their trays.
+        </p>
+    </div>
+
+    <div class="card border-0 shadow-sm col-lg-8 mx-auto mb-5">
+        <div class="card-body p-4 text-center">
+            <h6 class="fw-bold mb-2">Worked example: tray T001 = (39.4, 83.2) in iteration 1</h6>
+            <p class="mb-1">
+                d(T001, C1) = &radic;((39.4 &minus; 30)<sup>2</sup> + (83.2 &minus; 60)<sup>2</sup>)
+                = &radic;(88.36 + 538.24) = <strong>25.03</strong>
+            </p>
+            <p class="text-muted small mb-0">
+                d(T001, C2) = 41.26 and d(T001, C3) = 40.73, so T001 is assigned to C1.
+            </p>
+        </div>
+    </div>
+
+    <ul class="nav nav-pills justify-content-center mb-4" role="tablist">
+        {% for it in iterations %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link dwr-iter-tab {% if loop.first %}active{% endif %}"
+                    id="iter-{{ it.number }}-tab" data-bs-toggle="pill"
+                    data-bs-target="#iter-{{ it.number }}" type="button" role="tab"
+                    aria-controls="iter-{{ it.number }}"
+                    aria-selected="{{ 'true' if loop.first else 'false' }}">
+                Iteration {{ it.number }}
+            </button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+        {% for it in iterations %}
+        <div class="tab-pane fade {% if loop.first %}show active{% endif %}"
+             id="iter-{{ it.number }}" role="tabpanel" aria-labelledby="iter-{{ it.number }}-tab">
+
+            <p class="text-muted col-lg-9 mx-auto text-center mb-4">
+                {{ iteration_notes[it.number] }}
+                {% if it.reassigned is not none %}
+                <strong>{{ it.reassigned }} tray{{ "s" if it.reassigned != 1 }} changed cluster</strong>
+                compared with iteration {{ it.number - 1 }}.
+                {% endif %}
+            </p>
+
+            <div class="row g-4">
+
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3">Distances and assignments (100 trays)</h5>
+                            <div class="table-responsive dwr-table-scroll">
+                                <table class="table table-sm table-hover text-center align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Tray</th>
+                                            <th>Moisture</th>
+                                            <th>Germination</th>
+                                            <th>d(C1)</th>
+                                            <th>d(C2)</th>
+                                            <th>d(C3)</th>
+                                            <th>Cluster</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row in it.rows %}
+                                        <tr>
+                                            <td>{{ row.tray_id }}</td>
+                                            <td>{{ "%.1f"|format(row.x) }}</td>
+                                            <td>{{ "%.1f"|format(row.y) }}</td>
+                                            {% for d in row.distances %}
+                                            <td {% if loop.index0 == row.nearest %}class="fw-bold dwr-nearest"{% endif %}>{{ "%.2f"|format(d) }}</td>
+                                            {% endfor %}
+                                            <td class="fw-semibold">
+                                                <span class="dwr-cluster-dot" style="background-color: {{ colors[row.cluster - 1] }};"></span>
+                                                C{{ row.cluster }}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3">Updated centroids</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm text-center align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Cluster</th>
+                                            <th>Trays</th>
+                                            <th>Before</th>
+                                            <th>New centroid</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for c in it.clusters %}
+                                        <tr>
+                                            <td class="fw-semibold">
+                                                <span class="dwr-cluster-dot" style="background-color: {{ c.color }};"></span>
+                                                {{ c.name }}
+                                            </td>
+                                            <td>{{ c.records }}</td>
+                                            <td class="small text-muted">({{ "%.2f"|format(c.before[0]) }}, {{ "%.2f"|format(c.before[1]) }})</td>
+                                            <td class="fw-semibold">({{ "%.2f"|format(c.after[0]) }}, {{ "%.2f"|format(c.after[1]) }})</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-muted small mt-3 mb-0">
+                                New centroid = average (moisture, germination) of
+                                the trays assigned to that cluster.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-3">
+                            <img src="{{ url_for('static', filename='images/kmeans_manual/iteration_' ~ it.number ~ '.png') }}"
+                                 class="img-fluid rounded"
+                                 alt="Clusters and updated centroids after iteration {{ it.number }}">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<!-- 04 Variance comparison -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                04 · Variance
+            </span>
+
+            <h2 class="fw-bold">
+                Within-Cluster Variance Across Iterations
+            </h2>
+
+            <p class="text-muted col-lg-8 mx-auto">
+                The variance of a cluster is the mean squared distance from its
+                trays to its updated centroid. The total <strong>WCSS</strong>
+                (within-cluster sum of squares) adds the squared distances of
+                all 100 trays. Lower values mean more compact clusters.
+            </p>
+        </div>
+
+        <div class="row g-4 align-items-center">
+
+            <div class="col-lg-7">
+                <div class="table-responsive">
+                    <table class="table table-bordered bg-white text-center align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Iteration</th>
+                                {% for k in range(3) %}
+                                <th>
+                                    <span class="dwr-cluster-dot" style="background-color: {{ colors[k] }};"></span>
+                                    Var C{{ k + 1 }} (n)
+                                </th>
+                                {% endfor %}
+                                <th>WCSS</th>
+                                <th>Reassigned</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for it in iterations %}
+                            <tr>
+                                <td class="fw-semibold">{{ it.number }}</td>
+                                {% for c in it.clusters %}
+                                <td>{{ "%.2f"|format(c.variance) }} <span class="text-muted small">({{ c.records }})</span></td>
+                                {% endfor %}
+                                <td class="fw-bold">{{ "{:,.2f}".format(it.wcss) }}</td>
+                                <td>{{ it.reassigned if it.reassigned is not none else "–" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <ul class="text-muted small mt-4 mb-0">
+                    <li class="mb-2">
+                        <strong>Iteration 1 &rarr; 2:</strong> WCSS falls by
+                        {{ "%.1f"|format((iterations[0].wcss - iterations[1].wcss) / iterations[0].wcss * 100) }}&nbsp;%.
+                        C1 mixed dry trays with high-germination trays, which
+                        gave it a very large variance. Once the groups separate,
+                        every cluster becomes compact.
+                    </li>
+                    <li class="mb-2">
+                        <strong>Iteration 2 &rarr; 3:</strong> WCSS falls by another
+                        {{ "%.1f"|format((iterations[1].wcss - iterations[2].wcss) / iterations[1].wcss * 100) }}&nbsp;%.
+                        The only change is tray T012: C1's variance drops by
+                        almost half because it loses its most distant member,
+                        and C3's variance rises slightly because it takes in a
+                        tray on its edge. The total still decreases, as K-Means
+                        guarantees.
+                    </li>
+                    <li>
+                        The shrinking improvement is the typical convergence
+                        pattern: most of the work happens in the first
+                        iterations, and a 4th iteration changes nothing.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <img src="{{ url_for('static', filename='images/kmeans_manual/variance_comparison.png') }}"
+                             class="img-fluid rounded"
+                             alt="Bar chart of the total WCSS for iterations 1, 2 and 3">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- 05 Final result -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            05 · Final Result
+        </span>
+
+        <h2 class="fw-bold">
+            Three Irrigation Profiles
+        </h2>
+
+        <p class="text-muted col-lg-8 mx-auto">
+            After 3 iterations the algorithm converged and the total WCSS fell
+            {{ "%.1f"|format(wcss_reduction) }}&nbsp;% from the first iteration.
+            Each cluster corresponds to a different irrigation profile.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        {% for c in final_clusters %}
+        {% set p = profiles[c.name] %}
+        <div class="col-lg-4">
+            <div class="card h-100 border-0 shadow-sm dwr-cluster-card" style="border-top: 4px solid {{ c.color }} !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi {{ p.icon }} fs-2 me-3" style="color: {{ c.color }};"></i>
+                        <div>
+                            <div class="small text-muted">{{ c.name }} &middot; {{ c.records }} trays</div>
+                            <h5 class="fw-bold mb-0">{{ p.name }}</h5>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm small mb-3">
+                        <tbody>
+                            <tr>
+                                <th class="fw-normal text-muted">Centroid</th>
+                                <td class="text-end fw-semibold">({{ "%.1f"|format(c.after[0]) }}&nbsp;%, {{ "%.1f"|format(c.after[1]) }}&nbsp;%)</td>
+                            </tr>
+                            <tr>
+                                <th class="fw-normal text-muted">Moisture range</th>
+                                <td class="text-end">{{ "%.1f"|format(c.x_min) }} – {{ "%.1f"|format(c.x_max) }}&nbsp;%</td>
+                            </tr>
+                            <tr>
+                                <th class="fw-normal text-muted">Germination range</th>
+                                <td class="text-end">{{ "%.1f"|format(c.y_min) }} – {{ "%.1f"|format(c.y_max) }}&nbsp;%</td>
+                            </tr>
+                            <tr>
+                                <th class="fw-normal text-muted">Variance</th>
+                                <td class="text-end">{{ "%.2f"|format(c.variance) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="text-muted small">{{ p.text }}</p>
+                    <p class="small mb-0"><strong>Action:</strong> {{ p.action }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="card border-0 shadow-sm mt-5 col-lg-10 mx-auto">
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-2">Conclusion</h5>
+            <p class="text-muted mb-0">
+                K-Means found three irrigation profiles that match agronomic
+                intuition: germination peaks at intermediate moisture and falls
+                on both sides. One variable alone could not show this. Moisture
+                separates the under-watered trays from the over-watered ones,
+                but only the combination with germination rate shows that the
+                middle group performs best. Starting from poorly placed
+                centroids, the algorithm corrected itself in two iterations and
+                converged in the third.
+            </p>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{{ url_for('unsupervised_clustering') }}" class="btn dwr-btn-primary btn-lg">
+            Continue to the Clustering Application
+        </a>
+    </div>
+</section>
+
+{% endblock %}
