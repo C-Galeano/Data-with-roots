@@ -385,10 +385,13 @@ def unsupervised_manual():
     return render_template("unsupervised/manual.html", **build_manual_kmeans_context())
 
 
+with open(os.path.join(BASE_DIR, "clustering_app", "results", "results.json")) as f:
+    clustering_results = json.load(f)
+
+
 @app.route("/unsupervised/clustering")
 def unsupervised_clustering():
-    # Clustering Application (Scikit-learn K-Means) - in progress by team member 3
-    return render_template("unsupervised/clustering.html")
+    return render_template("unsupervised/clustering.html", **clustering_results)
 
 if __name__ == "__main__":
     app.run(debug=True)
