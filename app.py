@@ -1,454 +1,11 @@
 from flask import Flask, render_template, request
-import pandas as pd
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import io
-import base64
 
-
-from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.model_selection import train_test_split
-
-from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
-    confusion_matrix
-)
+from models import gradient_boosting as gbc
+from models import linear_regression as linreg
+from models import logistic_regression as logreg
+from models import unsupervised
 
 app = Flask(__name__)
-
-df = pd.read_csv("data/coffee_shop_revenue.csv")
-
-x = df[["Marketing_Spend_Per_Day"]]
-y = df[["Number_of_Customers_Per_Day"]]
-
-total_records = len(df)
-
-model = LinearRegression()
-model.fit(x, y)
-
-
-# --- Supervised: Logistic Regression (data setup) ---
-
-logreg_df = pd.read_csv("data/seed_germination.csv")
-
-logreg_total_records = len(logreg_df)
-
-logreg_x = logreg_df[["Soil_Moisture_Percent"]]
-logreg_y = logreg_df["Germinated"]
-
-logreg_x_train, logreg_x_test, logreg_y_train, logreg_y_test = train_test_split(
-    logreg_x, logreg_y, test_size=0.2, random_state=42
-)
-
-logreg_model = LogisticRegression()
-logreg_model.fit(logreg_x_train, logreg_y_train)
-
-# --- Logistic Regression Evaluation ---
-
-logreg_y_pred = logreg_model.predict(logreg_x_test)
-
-logreg_cm = confusion_matrix(logreg_y_test, logreg_y_pred)
-
-logreg_accuracy = accuracy_score(logreg_y_test, logreg_y_pred)
-
-logreg_precision = precision_score(
-    logreg_y_test,
-    logreg_y_pred,
-    zero_division=0
-)
-
-logreg_recall = recall_score(
-    logreg_y_test,
-    logreg_y_pred,
-    zero_division=0
-)
-
-logreg_f1 = f1_score(
-    logreg_y_test,
-    logreg_y_pred,
-    zero_division=0
-)
-
-def create_logreg_confusion_matrix():
-    cm = logreg_cm
-
-    plt.figure(figsize=(7, 5))
-
-    plt.imshow(
-        cm,
-        interpolation="nearest",
-        cmap="Blues"
-    )
-
-    plt.title("Logistic Regression - Confusion Matrix")
-    plt.colorbar()
-
-    classes = [
-        "Not Germinated (0)",
-        "Germinated (1)"
-    ]
-
-    plt.xticks(
-        [0, 1],
-        classes,
-        rotation=20
-    )
-
-    plt.yticks(
-        [0, 1],
-        classes
-    )
-
-    plt.xlabel("Predicted Class")
-    plt.ylabel("Actual Class")
-
-    threshold = cm.max() / 2
-
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            plt.text(
-                j,
-                i,
-                cm[i, j],
-                horizontalalignment="center",
-                verticalalignment="center",
-                color="white" if cm[i, j] > threshold else "black",
-                fontsize=14,
-                fontweight="bold"
-            )
-
-    plt.tight_layout()
-
-    img = io.BytesIO()
-
-    plt.savefig(
-        img,
-        format="png",
-        bbox_inches="tight"
-    )
-
-    img.seek(0)
-
-    plot_url = base64.b64encode(
-        img.getvalue()
-    ).decode("utf8")
-
-    plt.close()
-
-    return plot_url
-
-
-def classifyGermination(soil_moisture):
-    input_df = pd.DataFrame({"Soil_Moisture_Percent": [soil_moisture]})
-    predicted_class = int(logreg_model.predict(input_df)[0])
-    probability = logreg_model.predict_proba(input_df)[0][1]
-    return predicted_class, round(probability * 100, 1)
-
-
-# --- Supervised: Gradient Boosting Classifier ----
-GBC_FEATURES = [
-    "Temperature_C",
-    "Humidity_Percent",
-    "Rainfall_mm",
-    "Soil_Nitrogen_Level",
-]
-
-gbc_df = pd.read_csv("data/crop_disease_risk.csv")
-
-gbc_total_records = len(gbc_df)
-
-gbc_x = gbc_df[GBC_FEATURES]
-gbc_y = gbc_df["Disease_Risk"]
-
-gbc_x_train, gbc_x_test, gbc_y_train, gbc_y_test = train_test_split(
-    gbc_x, gbc_y, test_size=0.2, random_state=42
-)
-
-gbc_model = GradientBoostingClassifier(random_state=42)
-gbc_model.fit(gbc_x_train, gbc_y_train)
-
-# --- Gradient Boosting Classifier Evaluation ---
-
-gbc_y_pred = gbc_model.predict(gbc_x_test)
-
-gbc_cm = confusion_matrix(gbc_y_test, gbc_y_pred)
-
-gbc_accuracy = accuracy_score(gbc_y_test, gbc_y_pred)
-
-gbc_precision = precision_score(
-    gbc_y_test,
-    gbc_y_pred,
-    zero_division=0
-)
-
-gbc_recall = recall_score(
-    gbc_y_test,
-    gbc_y_pred,
-    zero_division=0
-)
-
-gbc_f1 = f1_score(
-    gbc_y_test,
-    gbc_y_pred,
-    zero_division=0
-)
-
-
-def create_gbc_confusion_matrix():
-    cm = gbc_cm
-
-    plt.figure(figsize=(7, 5))
-
-    plt.imshow(
-        cm,
-        interpolation="nearest",
-        cmap="Blues"
-    )
-
-    plt.title("Gradient Boosting Classifier - Confusion Matrix")
-    plt.colorbar()
-
-    classes = [
-        "Low Risk (0)",
-        "High Risk (1)"
-    ]
-
-    plt.xticks(
-        [0, 1],
-        classes,
-        rotation=20
-    )
-
-    plt.yticks(
-        [0, 1],
-        classes
-    )
-
-    plt.xlabel("Predicted Class")
-    plt.ylabel("Actual Class")
-
-    threshold = cm.max() / 2
-
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            plt.text(
-                j,
-                i,
-                cm[i, j],
-                horizontalalignment="center",
-                verticalalignment="center",
-                color="white" if cm[i, j] > threshold else "black",
-                fontsize=14,
-                fontweight="bold"
-            )
-
-    plt.tight_layout()
-
-    img = io.BytesIO()
-
-    plt.savefig(
-        img,
-        format="png",
-        bbox_inches="tight"
-    )
-
-    img.seek(0)
-
-    plot_url = base64.b64encode(
-        img.getvalue()
-    ).decode("utf8")
-
-    plt.close()
-
-    return plot_url
-
-
-def classifyDiseaseRisk(temperature, humidity, rainfall, nitrogen):
-    input_df = pd.DataFrame({
-        "Temperature_C": [temperature],
-        "Humidity_Percent": [humidity],
-        "Rainfall_mm": [rainfall],
-        "Soil_Nitrogen_Level": [nitrogen],
-    })
-    predicted_class = int(gbc_model.predict(input_df)[0])
-    probability = gbc_model.predict_proba(input_df)[0][1]
-    return predicted_class, round(probability * 100, 1)
-
-
-def create_gbc_plot(temperature=None, humidity=None, predicted_class=None):
-    plt.figure(figsize=(8, 5))
-
-    low_risk = gbc_df[gbc_df["Disease_Risk"] == 0]
-    high_risk = gbc_df[gbc_df["Disease_Risk"] == 1]
-
-    plt.scatter(
-        low_risk["Temperature_C"],
-        low_risk["Humidity_Percent"],
-        alpha=0.5,
-        color="seagreen",
-        label="Low Risk (0)"
-    )
-    plt.scatter(
-        high_risk["Temperature_C"],
-        high_risk["Humidity_Percent"],
-        alpha=0.5,
-        color="firebrick",
-        label="High Risk (1)"
-    )
-
-    if temperature is not None and humidity is not None:
-        plt.scatter(
-            temperature,
-            humidity,
-            s=180,
-            color="black",
-            marker="X",
-            zorder=5,
-            label="Your prediction"
-        )
-
-    plt.xlabel("Temperature (C)")
-    plt.ylabel("Humidity (%)")
-    plt.title("Gradient Boosting: Temperature vs Humidity by Disease Risk")
-    plt.legend(loc="upper right")
-    plt.grid(alpha=0.3)
-
-    img = io.BytesIO()
-    plt.savefig(img, format="png", bbox_inches="tight")
-    img.seek(0)
-
-    plot_url = base64.b64encode(img.getvalue()).decode("utf8")
-    plt.close()
-
-    return plot_url
-
-
-def create_logreg_plot(soil_moisture=None, predicted_class=None):
-    plt.figure(figsize=(8, 5))
-
-    germinated = logreg_df[logreg_df["Germinated"] == 1]
-    not_germinated = logreg_df[logreg_df["Germinated"] == 0]
-
-    plt.scatter(
-        not_germinated["Soil_Moisture_Percent"],
-        not_germinated["Germinated"],
-        alpha=0.5,
-        color="firebrick",
-        label="Not Germinated (0)"
-    )
-    plt.scatter(
-        germinated["Soil_Moisture_Percent"],
-        germinated["Germinated"],
-        alpha=0.5,
-        color="seagreen",
-        label="Germinated (1)"
-    )
-
-    moisture_range = pd.DataFrame({
-        "Soil_Moisture_Percent": [i / 2 for i in range(10, 191)]
-    })
-    probability_curve = logreg_model.predict_proba(moisture_range)[:, 1]
-
-    plt.plot(
-        moisture_range["Soil_Moisture_Percent"],
-        probability_curve,
-        color="steelblue",
-        linewidth=2.5,
-        label="Predicted probability of germination"
-    )
-
-    if soil_moisture is not None and predicted_class is not None:
-        plt.scatter(
-            soil_moisture,
-            predicted_class,
-            s=180,
-            color="black",
-            marker="X",
-            zorder=5,
-            label="Your prediction"
-        )
-
-    plt.xlabel("Soil Moisture (%)")
-    plt.ylabel("Germinated (0 = No, 1 = Yes)")
-    plt.title("Logistic Regression: Soil Moisture vs Seed Germination")
-    plt.legend(loc="center right")
-    plt.grid(alpha=0.3)
-
-    img = io.BytesIO()
-    plt.savefig(img, format="png", bbox_inches="tight")
-    img.seek(0)
-
-    plot_url = base64.b64encode(img.getvalue()).decode("utf8")
-    plt.close()
-
-    return plot_url
-
-
-def calculateCustomers(marketing_spend):
-    result = model.predict([[marketing_spend]])[0][0]
-    return round(result)
-
-def create_plot(marketing_spend=None, predicted_customers=None):
-    plt.figure(figsize=(8, 5))
-
-    x_plot = x.head(500)
-    y_plot = y.head(500)
-
-    plt.scatter(
-        x_plot["Marketing_Spend_Per_Day"],
-        y_plot["Number_of_Customers_Per_Day"],
-        alpha=0.4,
-        color="steelblue",
-        label="Datos reales"
-    )
-
-    x_line = pd.DataFrame({
-        "Marketing_Spend_Per_Day": [
-            x["Marketing_Spend_Per_Day"].min(),
-            x["Marketing_Spend_Per_Day"].max()
-        ]
-    })
-
-    y_line = model.predict(x_line)
-
-    plt.plot(
-        x_line["Marketing_Spend_Per_Day"],
-        y_line,
-        color="red",
-        linewidth=2.5,
-        label="Recta de regresión"
-    )
-
-    if marketing_spend is not None and predicted_customers is not None:
-        plt.scatter(
-            marketing_spend,
-            predicted_customers,
-            s=180,
-            color="black",
-            marker="X",
-            zorder=5,
-            label="Tu predicción"
-        )
-
-    plt.xlabel("Marketing Spend Per Day")
-    plt.ylabel("Number of Customers Per Day")
-    plt.title("Linear Regression: Marketing Spend vs Number of Customers")
-    plt.legend()
-    plt.grid(alpha=0.3)
-
-    img = io.BytesIO()
-    plt.savefig(img, format="png", bbox_inches="tight")
-    img.seek(0)
-
-    plot_url = base64.b64encode(img.getvalue()).decode("utf8")
-    plt.close()
-
-    return plot_url
 
 
 # --- Home -------
@@ -501,7 +58,7 @@ def regression_concepts():
 
 @app.route("/regression/application", methods=["GET", "POST"])
 def regression_application():
-    calculateResult = None
+    result = None
     plot_url = None
 
     if request.method == "POST":
@@ -509,18 +66,14 @@ def regression_application():
 
         if marketing_spend:
             marketing_spend = float(marketing_spend)
-            calculateResult = calculateCustomers(marketing_spend)
-
-            plot_url = create_plot(
-                marketing_spend,
-                calculateResult
-            )
+            result = linreg.calculate_customers(marketing_spend)
+            plot_url = linreg.create_plot(marketing_spend, result)
 
     return render_template(
         "regression/application.html",
-        result=calculateResult,
+        result=result,
         plot_url=plot_url,
-        total_records=total_records
+        total_records=linreg.total_records
     )
 
 
@@ -546,10 +99,10 @@ def logistic_regression_application():
             soil_moisture = float(soil_moisture)
 
             if 0 <= soil_moisture <= 100:
-                predicted_class, probability = classifyGermination(soil_moisture)
+                predicted_class, probability = logreg.classify_germination(soil_moisture)
                 predicted_label = "Germinated" if predicted_class == 1 else "Not Germinated"
 
-                plot_url = create_logreg_plot(soil_moisture, predicted_class)
+                plot_url = logreg.create_plot(soil_moisture, predicted_class)
             else:
                 error = "Soil moisture must be a value between 0 and 100."
 
@@ -560,30 +113,15 @@ def logistic_regression_application():
         probability=probability,
         plot_url=plot_url,
         error=error,
-        total_records=logreg_total_records
+        total_records=logreg.total_records
     )
+
 
 @app.route("/logistic-regression/evaluation")
 def logistic_regression_evaluation():
-
-    tn, fp, fn, tp = logreg_cm.ravel()
-
-    plot_url = create_logreg_confusion_matrix()
-
     return render_template(
         "logistic_regression/evaluation.html",
-        total_records=logreg_total_records,
-        train_records=len(logreg_x_train),
-        test_records=len(logreg_x_test),
-        accuracy=logreg_accuracy,
-        precision=logreg_precision,
-        recall=logreg_recall,
-        f1=logreg_f1,
-        tn=tn,
-        fp=fp,
-        fn=fn,
-        tp=tp,
-        plot_url=plot_url
+        **logreg.evaluation_context()
     )
 
 
@@ -601,8 +139,6 @@ def gradient_boosting_application():
     probability = None
     plot_url = None
     error = None
-    temperature = None
-    humidity = None
 
     if request.method == "POST":
         temperature = request.form.get("temperature")
@@ -617,12 +153,12 @@ def gradient_boosting_application():
             nitrogen = float(nitrogen)
 
             if 0 <= humidity <= 100 and 0 <= nitrogen <= 100 and rainfall >= 0:
-                predicted_class, probability = classifyDiseaseRisk(
+                predicted_class, probability = gbc.classify_disease_risk(
                     temperature, humidity, rainfall, nitrogen
                 )
                 predicted_label = "High Risk" if predicted_class == 1 else "Low Risk"
 
-                plot_url = create_gbc_plot(temperature, humidity, predicted_class)
+                plot_url = gbc.create_plot(temperature, humidity, predicted_class)
             else:
                 error = "Humidity and Nitrogen must be between 0 and 100, and Rainfall must be 0 or greater."
 
@@ -633,117 +169,19 @@ def gradient_boosting_application():
         probability=probability,
         plot_url=plot_url,
         error=error,
-        total_records=gbc_total_records
+        total_records=gbc.total_records
     )
 
 
 @app.route("/gradient-boosting/evaluation")
 def gradient_boosting_evaluation():
-
-    tn, fp, fn, tp = gbc_cm.ravel()
-
-    plot_url = create_gbc_confusion_matrix()
-
     return render_template(
         "gradient_boosting/evaluation.html",
-        total_records=gbc_total_records,
-        train_records=len(gbc_x_train),
-        test_records=len(gbc_x_test),
-        accuracy=gbc_accuracy,
-        precision=gbc_precision,
-        recall=gbc_recall,
-        f1=gbc_f1,
-        tn=tn,
-        fp=fp,
-        fn=fn,
-        tp=tp,
-        plot_url=plot_url
+        **gbc.evaluation_context()
     )
 
 
 # --- Unsupervised Machine Learning ---
-
-import json
-import os
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Part 1: results of the manual K-Means simulation (kmeans_manual/manual_kmeans.py)
-with open(os.path.join(BASE_DIR, "kmeans_manual", "results", "results.json")) as f:
-    manual_kmeans = json.load(f)
-
-MANUAL_CLUSTER_COLORS = ["#2a78d6", "#eb6834", "#1baf7a"]  # same colors as the plots
-
-
-def build_manual_kmeans_context():
-    """Prepare the manual K-Means results so the template only has to display them."""
-    iterations = []
-    for it in manual_kmeans["iterations"]:
-        rows = []
-        for row in it["rows"]:
-            distances = row["distances"]
-            rows.append({
-                "tray_id": row["tray_id"],
-                "x": row["x"],
-                "y": row["y"],
-                "distances": distances,
-                "nearest": distances.index(min(distances)),
-                "cluster": row["cluster"],
-            })
-
-        clusters = []
-        for k, c in enumerate(it["clusters"]):
-            clusters.append({
-                "name": f"C{k + 1}",
-                "color": MANUAL_CLUSTER_COLORS[k],
-                "records": c["records"],
-                "sse": c["sse"],
-                "variance": c["variance"],
-                "before": it["centroids_before"][k],
-                "after": it["centroids_after"][k],
-            })
-
-        iterations.append({
-            "number": it["iteration"],
-            "rows": rows,
-            "clusters": clusters,
-            "wcss": it["wcss"],
-            "reassigned": it["reassigned"],
-        })
-
-    # Final cluster profiles (ranges of the trays assigned in the last iteration)
-    last = iterations[-1]
-    final_clusters = []
-    for k, c in enumerate(last["clusters"]):
-        members = [r for r in last["rows"] if r["cluster"] == k + 1]
-        final_clusters.append({
-            **c,
-            "x_min": min(r["x"] for r in members),
-            "x_max": max(r["x"] for r in members),
-            "y_min": min(r["y"] for r in members),
-            "y_max": max(r["y"] for r in members),
-        })
-
-    xs = [r["x"] for r in last["rows"]]
-    ys = [r["y"] for r in last["rows"]]
-    dataset_stats = {
-        "records": len(xs),
-        "x_min": min(xs), "x_max": max(xs), "x_mean": sum(xs) / len(xs),
-        "y_min": min(ys), "y_max": max(ys), "y_mean": sum(ys) / len(ys),
-    }
-
-    wcss_first = iterations[0]["wcss"]
-    wcss_last = iterations[-1]["wcss"]
-
-    return {
-        "initial_centroids": manual_kmeans["initial_centroids"],
-        "colors": MANUAL_CLUSTER_COLORS,
-        "iterations": iterations,
-        "final_clusters": final_clusters,
-        "dataset_stats": dataset_stats,
-        "wcss_reduction": (wcss_first - wcss_last) / wcss_first * 100,
-    }
-
 
 @app.route("/unsupervised/concepts")
 def unsupervised_concepts():
@@ -752,16 +190,19 @@ def unsupervised_concepts():
 
 @app.route("/unsupervised/manual-exercise")
 def unsupervised_manual():
-    return render_template("unsupervised/manual.html", **build_manual_kmeans_context())
-
-
-with open(os.path.join(BASE_DIR, "clustering_app", "results", "results.json")) as f:
-    clustering_results = json.load(f)
+    return render_template(
+        "unsupervised/manual.html",
+        **unsupervised.manual_exercise_context()
+    )
 
 
 @app.route("/unsupervised/clustering")
 def unsupervised_clustering():
-    return render_template("unsupervised/clustering.html", **clustering_results)
+    return render_template(
+        "unsupervised/clustering.html",
+        **unsupervised.clustering_context()
+    )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
