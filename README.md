@@ -118,6 +118,10 @@ To add a new section: put its data loading, training and plotting in a new file 
 | `/regression/application`        | Linear Regression - Application    |
 | `/logistic-regression/concepts`     | Logistic Regression - Concepts     |
 | `/logistic-regression/application`  | Logistic Regression - Application  |
+| `/logistic-regression/evaluation`   | Logistic Regression - Evaluation   |
+| `/gradient-boosting/concepts`       | Gradient Boosting - Concepts       |
+| `/gradient-boosting/application`    | Gradient Boosting - Application    |
+| `/gradient-boosting/evaluation`     | Gradient Boosting - Evaluation     |
 | `/unsupervised/concepts`           | Unsupervised Machine Learning - Concepts |
 | `/unsupervised/manual-exercise`    | Unsupervised Machine Learning - Manual Exercise |
 | `/unsupervised/clustering`         | Unsupervised Machine Learning - Clustering Application |
