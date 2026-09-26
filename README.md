@@ -24,43 +24,62 @@ combining an academic presentation with a clean, modern design.
 ```text
 data-with-roots/
 │
-├── app.py
+├── app.py                 # Flask app: routes only
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
 │
+├── models/                # One module per ML section (data loading, training, plots)
+│   ├── linear_regression.py
+│   ├── logistic_regression.py
+│   ├── gradient_boosting.py
+│   └── unsupervised.py    # Loads the K-Means results for the Unsupervised pages
+│
+├── utils/                 # Helpers shared by the model modules
+│   ├── paths.py           # Absolute project paths (BASE_DIR, DATA_DIR)
+│   ├── plots.py           # fig_to_base64(), confusion matrix plot
+│   └── metrics.py         # Accuracy, precision, recall, F1, confusion matrix
+│
+├── kmeans_manual/         # Unsupervised > Part 1: manual K-Means simulation
+│   ├── manual_kmeans.py
+│   ├── README.md          # Write-up of the manual exercise
+│   └── results/           # Iteration tables, centroids, variance, results.json
+│
+├── clustering_app/        # Unsupervised > Clustering Application (scikit-learn K-Means)
+│   ├── build_clustering.py
+│   └── results/           # results.json, labeled sample
+│
 ├── data/
 │   ├── coffee_shop_revenue.csv                 # Linear Regression dataset
 │   ├── seed_germination.csv                    # Logistic Regression dataset
-│   └── generate_seed_germination_dataset.py    # Generator for the dataset above
+│   ├── generate_seed_germination_dataset.py
+│   ├── crop_disease_risk.csv                   # Gradient Boosting dataset
+│   ├── generate_crop_disease_dataset.py
+│   ├── seed_trays.csv                          # Manual K-Means dataset (100 records)
+│   ├── generate_seed_trays_dataset.py
+│   └── crop_recommendation.csv                 # Clustering Application dataset
 │
 ├── templates/
 │   ├── base.html          # Shared layout: navbar, footer, blocks
+│   ├── _macros.html
 │   ├── home.html          # Landing page
-│   │
-│   ├── ml/                # Machine Learning section
-│   │   ├── concepts.html
-│   │   └── types.html
-│   │
-│   ├── use_cases/         # Use Cases section
-│   │   ├── use_case_1.html
-│   │   ├── use_case_2.html
-│   │   ├── use_case_3.html
-│   │   └── use_case_4.html
-│   │
-│   ├── regression/        # Supervised > Linear Regression
-│   │   ├── concepts.html
-│   │   └── application.html
-│   │
-│   └── logistic_regression/  # Supervised > Logistic Regression
-│       ├── concepts.html
-│       └── application.html
+│   ├── ml/                # Machine Learning: concepts, types
+│   ├── use_cases/         # Use Cases 1-4
+│   ├── regression/        # Supervised > Linear Regression: concepts, application
+│   ├── logistic_regression/  # Supervised > Logistic Regression: concepts, application, evaluation
+│   ├── gradient_boosting/    # Supervised > Gradient Boosting: concepts, application, evaluation
+│   └── unsupervised/      # Unsupervised: concepts, manual exercise, clustering
 │
 └── static/
     ├── css/style.css
     ├── js/script.js
     └── images/
+        ├── kmeans_manual/     # Plots of the manual K-Means iterations
+        └── clustering_app/    # Elbow, PCA scatter and cluster profile plots
 ```
+
+To add a new section: put its data loading, training and plotting in a new file under
+`models/`, and add only the routes to `app.py`.
 
 ## Getting Started
 
