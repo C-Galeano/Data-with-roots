@@ -99,6 +99,9 @@ data-with-roots/
 | `/regression/application`        | Linear Regression - Application    |
 | `/logistic-regression/concepts`     | Logistic Regression - Concepts     |
 | `/logistic-regression/application`  | Logistic Regression - Application  |
+| `/unsupervised/concepts`           | Unsupervised Machine Learning - Concepts |
+| `/unsupervised/manual-exercise`    | Unsupervised Machine Learning - Manual Exercise |
+| `/unsupervised/clustering`         | Unsupervised Machine Learning - Clustering Application |
 
 ## Status
 

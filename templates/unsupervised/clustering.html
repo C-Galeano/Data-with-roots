@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+
+{% block title %}Clustering Application - Unsupervised Machine Learning{% endblock %}
+
+{% block content %}
+
+{% set profiles = {
+    1: {"name": "Dryland legumes", "icon": "bi-moisture",
+        "text": "Low nitrogen, low rainfall, moderate humidity. Matches legumes that fix their own nitrogen and tolerate drier conditions."},
+    2: {"name": "Humid, high-rainfall crops", "icon": "bi-cloud-rain",
+        "text": "The highest humidity and rainfall of the four groups. Matches water-demanding crops such as rice."},
+    3: {"name": "High-nitrogen fruit crops", "icon": "bi-sun",
+        "text": "The highest nitrogen level, warm temperature, low rainfall. Matches fruit crops that are heavy nitrogen feeders."},
+    4: {"name": "High P/K, cool-climate crops", "icon": "bi-snow",
+        "text": "Very high phosphorus and potassium, the most acidic soil and the lowest temperature. Matches orchard crops like grapes and apple."}
+} %}
+
+<!-- Hero -->
+<section class="dwr-hero text-white">
+    <div class="container py-5">
+        <div class="text-center py-5">
+            <span class="badge rounded-pill dwr-badge mb-3">Unsupervised Learning</span>
+            <h1 class="display-4 fw-bold text-white mb-3">K-Means Clustering Application</h1>
+            <p class="lead text-white-50 col-lg-8 mx-auto mb-0">
+                Finding natural soil and climate profiles in 2,200 real crop
+                records with Scikit-learn.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- 01 Dataset -->
+<section class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-7">
+            <span class="badge rounded-pill dwr-section-badge mb-3">01 · Dataset</span>
+            <h2 class="fw-bold mb-3">Dataset and Variable Selection</h2>
+            <p class="text-muted">
+                This section uses the <strong>Crop Recommendation Dataset</strong>,
+                which records the soil and climate conditions under which 22 different
+                crops grow well. It continues the irrigation theme of the manual
+                exercise: the manual part looked at moisture and germination in a
+                nursery, and this part looks at the broader set of soil and climate
+                conditions across many crops.
+            </p>
+            <p class="text-muted">
+                The manual exercise used only 2 variables because every distance had
+                to be calculated by hand. Here, with Scikit-learn doing the
+                arithmetic, all <strong>{{ dataset.n_features }} numerical
+                variables</strong> are used together, which lets K-Means find
+                groups that a 2-variable view would miss.
+            </p>
+            <p class="text-muted mb-0">
+                The crop label itself is <strong>not</strong> used to train the
+                model &mdash; K-Means only sees the 7 numeric columns. The label is
+                kept aside and used afterwards only to help interpret what each
+                cluster represents.
+            </p>
+        </div>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Variables used for clustering</h5>
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                            {% for f in dataset.features %}
+                            <tr>
+                                <td>{{ dataset.feature_labels[f] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <hr>
+                    <p class="text-muted small mb-1"><strong>{{ "{:,}".format(dataset.n_after) }}</strong> records</p>
+                    <p class="text-muted small mb-0"><strong>{{ dataset.n_crop_labels }}</strong> different crops in the original label (not used for training)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 02 Preprocessing -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">02 · Preprocessing</span>
+            <h2 class="fw-bold">Preprocessing Steps</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-clipboard-check dwr-icon"></i>
+                        <h5 class="fw-bold mt-3">1. Data quality check</h5>
+                        <p class="text-muted small mb-0">
+                            {{ dataset.n_before }} records loaded.
+                            {{ dataset.n_nulls }} missing values and
+                            {{ dataset.n_dupes }} duplicate rows were found, so no rows
+                            had to be dropped. {{ dataset.n_after }} records remained.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-rulers dwr-icon"></i>
+                        <h5 class="fw-bold mt-3">2. Standardization</h5>
+                        <p class="text-muted small mb-0">
+                            Unlike the manual exercise, these 7 variables are on very
+                            different scales (potassium up to 205, pH only 3.5&ndash;10).
+                            <code>StandardScaler</code> was applied so every variable
+                            contributes equally to the distance calculation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-graph-down dwr-icon"></i>
+                        <h5 class="fw-bold mt-3">3. Choosing k</h5>
+                        <p class="text-muted small mb-0">
+                            The elbow method was run for k = 2 to 9. The curve bends
+                            clearly at <strong>k = {{ model.k }}</strong>: adding more
+                            clusters after that keeps lowering WCSS only a little.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-body p-3 text-center">
+                <img src="{{ url_for('static', filename='images/clustering_app/elbow.png') }}"
+                     class="img-fluid rounded" style="max-height:420px;"
+                     alt="Elbow method plot showing WCSS for k from 2 to 9">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 03 Model -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">03 · Model</span>
+        <h2 class="fw-bold">K-Means Configuration</h2>
+    </div>
+    <div class="card border-0 shadow-sm col-lg-8 mx-auto">
+        <div class="card-body p-4">
+            <pre class="mb-3" style="white-space:pre-wrap;"><code>KMeans(
+    n_clusters={{ model.k }},
+    init="{{ model.init }}",
+    n_init={{ model.n_init }},
+    random_state={{ model.random_state }}
+)</code></pre>
+            <ul class="text-muted small mb-0">
+                <li class="mb-2"><strong>n_clusters = {{ model.k }}</strong>: chosen with the elbow method above.</li>
+                <li class="mb-2"><strong>init = "{{ model.init }}"</strong>: places the initial centroids far apart from each other instead of purely at random, which gives a better and more stable starting point than the plain random initialization used conceptually in the manual exercise.</li>
+                <li class="mb-2"><strong>n_init = {{ model.n_init }}</strong>: the algorithm runs {{ model.n_init }} times with different centroid seeds and keeps the run with the lowest WCSS, reducing the risk of a poor local minimum.</li>
+                <li><strong>random_state = {{ model.random_state }}</strong>: fixes the randomness so the result is reproducible.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- 04 Results table -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">04 · Results</span>
+            <h2 class="fw-bold">Records and Assigned Clusters</h2>
+            <p class="text-muted col-lg-8 mx-auto">
+                First 100 records of the dataset with the cluster K-Means assigned to
+                each one, plus the original crop label for reference (not used for training).
+            </p>
+        </div>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="table-responsive dwr-table-scroll">
+                    <table class="table table-sm table-hover text-center align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th><th>N</th><th>P</th><th>K</th>
+                                <th>Temp (°C)</th><th>Humidity (%)</th><th>pH</th><th>Rainfall (mm)</th>
+                                <th>Crop</th><th>Cluster</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in sample_records %}
+                            <tr>
+                                <td>{{ r.row_id }}</td>
+                                <td>{{ r.N }}</td><td>{{ r.P }}</td><td>{{ r.K }}</td>
+                                <td>{{ "%.1f"|format(r.temperature) }}</td>
+                                <td>{{ "%.1f"|format(r.humidity) }}</td>
+                                <td>{{ "%.2f"|format(r.ph) }}</td>
+                                <td>{{ "%.1f"|format(r.rainfall) }}</td>
+                                <td class="text-capitalize">{{ r.label }}</td>
+                                <td class="fw-semibold">
+                                    <span class="dwr-cluster-dot" style="background-color: {{ clusters[r.cluster - 1].color }};"></span>
+                                    C{{ r.cluster }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 05 Summary + scatter -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">05 · Summary</span>
+        <h2 class="fw-bold">Cluster Sizes and Centroids</h2>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="table-responsive">
+                <table class="table table-bordered bg-white text-center align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Cluster</th><th>Records</th><th>N</th><th>P</th><th>K</th>
+                            <th>Temp</th><th>Humidity</th><th>pH</th><th>Rainfall</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in clusters %}
+                        <tr>
+                            <td class="fw-semibold">
+                                <span class="dwr-cluster-dot" style="background-color: {{ c.color }};"></span>
+                                C{{ c.cluster }}
+                            </td>
+                            <td>{{ c.records }} <span class="text-muted small">({{ c.pct }}%)</span></td>
+                            <td>{{ "%.1f"|format(c.centroid.N) }}</td>
+                            <td>{{ "%.1f"|format(c.centroid.P) }}</td>
+                            <td>{{ "%.1f"|format(c.centroid.K) }}</td>
+                            <td>{{ "%.1f"|format(c.centroid.temperature) }}</td>
+                            <td>{{ "%.1f"|format(c.centroid.humidity) }}</td>
+                            <td>{{ "%.2f"|format(c.centroid.ph) }}</td>
+                            <td>{{ "%.1f"|format(c.centroid.rainfall) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-muted small mt-3">
+                Centroids are shown back in their original units (not the standardized
+                scale used internally) so they are directly interpretable.
+            </p>
+        </div>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <img src="{{ url_for('static', filename='images/clustering_app/clusters_pca.png') }}"
+                         class="img-fluid rounded" alt="Scatter plot of the 4 clusters projected with PCA, with centroids marked">
+                </div>
+            </div>
+            <p class="text-muted small mt-2">
+                Since there are 7 variables, they cannot be plotted directly. PCA
+                projects them onto the 2 directions of greatest variance
+                ({{ pca_explained_variance[0] }}% + {{ pca_explained_variance[1] }}%
+                of the total variance) purely for visualization; the clustering
+                itself was done on all 7 original variables.
+            </p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mt-4">
+        <div class="card-body p-3 text-center">
+            <img src="{{ url_for('static', filename='images/clustering_app/feature_profiles.png') }}"
+                 class="img-fluid rounded" style="max-height:480px;"
+                 alt="Boxplots comparing each variable across the 4 clusters">
+        </div>
+    </div>
+</section>
+
+<!-- 06 Evaluation -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">06 · Evaluation</span>
+            <h2 class="fw-bold">Silhouette Score</h2>
+        </div>
+        <div class="card border-0 shadow-sm col-lg-8 mx-auto">
+            <div class="card-body p-4 text-center">
+                <div class="display-4 fw-bold" style="color:#2a78d6;">{{ silhouette_score }}</div>
+                <p class="text-muted mt-3 mb-0">
+                    A score around {{ silhouette_score }} (on a &minus;1 to 1 scale)
+                    indicates a <strong>moderate</strong> clustering structure: the
+                    clusters are real and better than a random split, but they overlap
+                    at the edges rather than being perfectly separated. This matches
+                    the PCA scatter plot above, where cluster 4 is clearly apart but
+                    clusters 1&ndash;3 blend into each other. That overlap makes
+                    agronomic sense: many crops share similar soil and climate
+                    tolerances, so the boundary between "moderate rainfall" and "high
+                    rainfall" crops, for example, is naturally fuzzy rather than sharp.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 07 Cluster interpretation -->
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">07 · Interpretation</span>
+        <h2 class="fw-bold">What Each Cluster Represents</h2>
+    </div>
+    <div class="row g-4">
+        {% for c in clusters %}
+        {% set p = profiles[c.cluster] %}
+        <div class="col-lg-6">
+            <div class="card h-100 border-0 shadow-sm dwr-cluster-card" style="border-top: 4px solid {{ c.color }} !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi {{ p.icon }} fs-2 me-3" style="color: {{ c.color }};"></i>
+                        <div>
+                            <div class="small text-muted">Cluster {{ c.cluster }} &middot; {{ c.records }} records ({{ c.pct }}%)</div>
+                            <h5 class="fw-bold mb-0">{{ p.name }}</h5>
+                        </div>
+                    </div>
+                    <p class="text-muted small">{{ p.text }}</p>
+                    <p class="small mb-0">
+                        <strong>Most common crops:</strong>
+                        {% for t in c.top_crops %}{{ t.crop }}{% if not loop.last %}, {% endif %}{% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="card border-0 shadow-sm mt-5 col-lg-10 mx-auto">
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-2">Conclusion</h5>
+            <p class="text-muted mb-0">
+                Without ever seeing the crop names, K-Means grouped the records into
+                4 profiles that line up with recognizable agricultural categories:
+                dryland legumes, humid rainfall-dependent crops, high-nitrogen fruit
+                crops, and a distinct cool-climate, high-P/K orchard group. This
+                mirrors the manual exercise at a larger scale: there, moisture and
+                germination alone revealed 3 irrigation profiles; here, 7 soil and
+                climate variables together reveal 4 broader farming-condition
+                profiles across 22 different crops.
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
