@@ -1,0 +1,435 @@
+{% extends "base.html" %}
+
+{% block title %}Concepts - Gradient Boosting Classifier{% endblock %}
+
+{% block content %}
+
+<!-- Hero section -->
+<section class="dwr-hero text-white">
+    <div class="container py-5">
+        <div class="text-center py-5">
+            <span class="badge rounded-pill dwr-badge mb-3">
+                Supervised Learning
+            </span>
+
+            <h1 class="display-4 fw-bold text-white mb-3">
+                Gradient Boosting Classifier: Concepts
+            </h1>
+        </div>
+    </div>
+</section>
+
+
+<!-- What is Gradient Boosting? -->
+<section class="container py-5">
+    <div class="row align-items-center g-5">
+
+        <div class="col-lg-7">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                01 · Fundamentals
+            </span>
+
+            <h2 class="fw-bold mb-3">
+                What is a Gradient Boosting Classifier?
+            </h2>
+
+            <p class="text-muted">
+                Gradient Boosting is a supervised Machine Learning algorithm
+                that builds a strong classification model by combining many
+                small, weak models, usually shallow decision trees, into a
+                single ensemble.
+            </p>
+
+            <p class="text-muted mb-0">
+                Instead of training one complex model at once, it trains
+                trees <strong>one after another</strong>, where each new
+                tree focuses on correcting the mistakes made by the trees
+                trained before it.
+            </p>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-diagram-3 dwr-icon"></i>
+                    </div>
+
+                    <h5 class="fw-bold text-center">
+                        Main Idea
+                    </h5>
+
+                    <p class="text-muted text-center mb-0">
+                        Add trees one at a time, each one learning from the
+                        errors of the previous ones, to gradually build a
+                        more accurate classifier.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- How it works -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                02 · How It Works
+            </span>
+
+            <h2 class="fw-bold">
+                How Does Gradient Boosting Work?
+            </h2>
+
+            <p class="text-muted col-lg-8 mx-auto">
+                Gradient Boosting is trained as a sequence of steps rather
+                than a single calculation. The process is repeated many
+                times until the model reaches a good level of accuracy.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-1-circle dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Start Simple
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            A first small tree is trained to make an initial,
+                            rough prediction for every observation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-2-circle dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Learn From Errors
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            The errors of that tree are measured, and a new
+                            tree is trained specifically to reduce them.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-3-circle dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Combine and Repeat
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            The new tree is added to the ensemble, and the
+                            cycle repeats until the combined model classifies
+                            the data reliably.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Types of problems it can solve -->
+<section class="container py-5">
+    <div class="row align-items-center g-5">
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-5">
+                    <i class="bi bi-collection display-5 text-success"></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Wide Range of Problems
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Applicable to binary classification, multi-class
+                        classification, and regression problems.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                03 · Types of Problems
+            </span>
+
+            <h2 class="fw-bold mb-3">
+                What Kind of Problems Can It Solve?
+            </h2>
+
+            <p class="text-muted">
+                Gradient Boosting is a general-purpose algorithm. In its
+                classifier form it is used for
+                <strong>binary classification</strong> (two classes, as in
+                this application) and can also be extended to
+                <strong>multi-class classification</strong> problems with
+                more than two possible labels.
+            </p>
+
+            <p class="text-muted mb-0">
+                It performs especially well on structured, tabular data with
+                <strong>several independent variables</strong> that interact
+                with each other in non-linear ways, which is exactly the
+                kind of dataset used in this application.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Main characteristics -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                04 · Characteristics
+            </span>
+
+            <h2 class="fw-bold">
+                Main Characteristics
+            </h2>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-tree dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Ensemble of Trees
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            It combines many shallow decision trees instead
+                            of relying on a single model, which reduces the
+                            weaknesses of any individual tree.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-graph-up-arrow dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Sequential Learning
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            Trees are trained one after another, each one
+                            correcting the errors of the ensemble built so
+                            far, rather than training all trees independently
+                            at the same time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-diagram-2 dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Captures Non-Linear Relationships
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            It can naturally model complex, non-linear
+                            interactions between several independent
+                            variables at once.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm dwr-card">
+                    <div class="card-body p-4">
+                        <i class="bi bi-sliders dwr-icon"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Configurable Learning Rate
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            A learning rate parameter controls how much each
+                            new tree contributes, balancing accuracy against
+                            the risk of overfitting.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Advantages and limitations -->
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            05 · Advantages and Limitations
+        </span>
+
+        <h2 class="fw-bold">
+            Advantages and Limitations
+        </h2>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-success mb-3">
+                        <i class="bi bi-check-circle me-2"></i>Advantages
+                    </h5>
+                    <ul class="text-muted mb-0">
+                        <li class="mb-2">Usually achieves high classification accuracy.</li>
+                        <li class="mb-2">Handles multiple independent variables and their interactions well.</li>
+                        <li class="mb-2">Works with both numerical and categorical-style features.</li>
+                        <li class="mb-0">Ranks how important each variable is for the prediction.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-danger mb-3">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Limitations
+                    </h5>
+                    <ul class="text-muted mb-0">
+                        <li class="mb-2">Slower to train than simpler models like Logistic Regression.</li>
+                        <li class="mb-2">Sensitive to poorly chosen hyperparameters (number of trees, learning rate, depth).</li>
+                        <li class="mb-2">Can overfit if too many trees are used without proper control.</li>
+                        <li class="mb-0">Less directly interpretable than a single decision tree.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Real-world example -->
+<section class="dwr-quick-access py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill dwr-section-badge mb-3">
+                06 · Real-World Example
+            </span>
+
+            <h2 class="fw-bold">
+                A Real-World Classification Example
+            </h2>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4 p-lg-5">
+                        <p class="text-muted mb-0">
+                            A farm monitoring system records daily
+                            <strong>temperature, humidity, rainfall, and soil
+                            nitrogen levels</strong> for different crop
+                            fields. A Gradient Boosting Classifier can learn
+                            from historical records which combinations of
+                            these conditions were followed by a disease
+                            outbreak, and use that pattern to classify new
+                            days as <strong>Low Risk</strong> or
+                            <strong>High Risk</strong>, helping farmers decide
+                            when to apply preventive treatment. This is
+                            exactly the problem addressed in this
+                            application.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Key Idea -->
+<section class="container py-5">
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center p-4 p-lg-5">
+
+            <i class="bi bi-lightbulb dwr-icon"></i>
+
+            <h3 class="fw-bold mt-3">
+                Key Idea
+            </h3>
+
+            <p class="text-muted col-lg-8 mx-auto mb-0">
+                Gradient Boosting builds a strong classifier by training many
+                small decision trees in sequence, where each tree focuses on
+                correcting the errors of the trees trained before it,
+                resulting in a model that can capture complex, non-linear
+                relationships between several independent variables.
+            </p>
+
+        </div>
+    </div>
+
+</section>
+
+
+<!-- Continue to Application -->
+<section class="container pb-5">
+    <div class="text-center">
+
+        <p class="text-muted mb-4">
+            Continue to the application to explore a real dataset and
+            classify new observations.
+        </p>
+
+        <a href="{{ url_for('gradient_boosting_application') }}"
+           class="btn btn-lg dwr-btn-primary">
+            <i class="bi bi-arrow-right-circle me-2"></i>
+            Go to Application
+        </a>
+
+    </div>
+</section>
+
+{% endblock %}
