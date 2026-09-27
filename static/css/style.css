@@ -148,3 +148,15 @@ a:hover {
     background-color: var(--dwr-blue-dark);
     color: rgba(255, 255, 255, 0.75);
 }
+
+/* Reinforcement Learning: Q-Learning grid */
+.rl-grid { border-collapse: collapse; }
+.rl-grid td {
+    width: 64px;
+    height: 64px;
+    text-align: center;
+    font-weight: 700;
+    border: 1px solid #b9c7d5;
+}
+.rl-grid .wall { background: #18314a; color: #fff; }
+.rl-grid .path { background: #c5eedb; }
