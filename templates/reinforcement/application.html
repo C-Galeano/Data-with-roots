@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Q-Learning - Reinforcement Learning{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- TITLE -->
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            Reinforcement Learning
+        </span>
+
+        <h1 class="fw-bold">
+            Q-Learning: Find the Exit
+        </h1>
+
+        <p class="lead text-muted">
+            A virtual robot learns to cross a maze by trial and error, using
+            <strong>SGDRegressor</strong> to estimate the value of each move.
+        </p>
+    </div>
+
+
+    <!-- 1. ENVIRONMENT -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-4">
+                1. Environment
+            </h2>
+
+            <div class="row g-4 align-items-center">
+
+                <div class="col-md-5 d-flex justify-content-center">
+                    <!-- One table cell for each grid position. -->
+                    <table class="rl-grid" aria-label="Grid">
+                        {% for row in range(grid|length) %}
+                        <tr>
+                            {% for column in range(grid[0]|length) %}
+                            {% set position = (row, column) %}
+                            <td class="{% if grid[row][column] == 1 %}wall{% elif result and position in result.path %}path{% endif %}">
+                                {% if position == start %}S
+                                {% elif position == goal %}G
+                                {% elif grid[row][column] == 1 %}#
+                                {% else %}·{% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div class="col-md-7">
+                    <p class="mb-2">
+                        <strong>State:</strong> the robot's position (row, column),
+                        starting at <strong>S</strong> {{ start }}.
+                    </p>
+                    <p class="mb-2">
+                        <strong>Actions:</strong> {{ actions|join(", ") }}.
+                    </p>
+                    <p class="mb-2">
+                        <strong>Rewards:</strong> −1 per move, −5 for hitting a
+                        wall (<strong>#</strong>) or the border, +20 for reaching
+                        <strong>G</strong> {{ goal }}.
+                    </p>
+                    <p class="mb-0">
+                        <strong>Model:</strong> a one-hot vector of 64 features
+                        (16 positions × 4 actions). With no intercept and no
+                        penalty, each weight of SGDRegressor is one Q(s, a) value.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 2. TRAINING -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                2. Training
+            </h2>
+
+            <p>
+                The agent plays 1000 episodes with an epsilon-greedy policy
+                (epsilon starts at 1.0 and decays to 0.05), γ = 0.95 and a
+                learning rate of 0.1. After every move it builds the target
+                <code>reward + γ · max Q(s′, a′)</code> and updates the model
+                with <code>partial_fit()</code>.
+            </p>
+
+            <!-- Submit the training request to the Flask route. -->
+            <form method="post" action="{{ url_for('reinforcement') }}">
+                <button type="submit" class="btn dwr-btn-primary">
+                    <i class="bi bi-play-fill me-1"></i>Train for 1000 episodes
+                </button>
+            </form>
+
+            {% if result %}
+            <div class="row g-4 mt-2">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100 text-center">
+                        <p class="text-muted mb-1">Episodes</p>
+                        <p class="fs-3 fw-bold mb-0">{{ result.episodes }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100 text-center">
+                        <p class="text-muted mb-1">Episodes that reached the goal</p>
+                        <p class="fs-3 fw-bold mb-0">{{ result.successes }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100 text-center">
+                        <p class="text-muted mb-1">Mean reward, last 100 episodes</p>
+                        <p class="fs-3 fw-bold mb-0">{{ result.final_average }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+
+    {% if result %}
+    <!-- 3. EVALUATION -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                3. Evaluation without Exploration
+            </h2>
+
+            {% if result.reached_goal %}
+            <div class="alert alert-success">
+                Goal reached in <strong>{{ result.steps|length }}</strong> moves!
+                The path is highlighted on the grid above.
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+                The goal was not reached within 100 moves.
+            </div>
+            {% endif %}
+
+            <!-- Each evaluation step in a table row. -->
+            <div class="table-responsive">
+                <table class="table table-sm table-striped align-middle">
+                    <thead>
+                        <tr><th>Step</th><th>State</th><th>Action</th>
+                            <th>Next state</th><th>Reward</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for step_info in result.steps %}
+                        <tr>
+                            <td>{{ step_info.number }}</td><td>{{ step_info.state }}</td>
+                            <td>{{ step_info.action }}</td><td>{{ step_info.next_state }}</td>
+                            <td>{{ step_info.reward }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 4. Q-TABLE -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                4. Learned Q-Values
+            </h2>
+
+            <p class="text-muted">
+                Predictions of the model for each free position. The best
+                action in each state is the one with the highest value.
+            </p>
+
+            <!-- Four action values for each state. -->
+            <div class="table-responsive">
+                <table class="table table-sm table-striped align-middle">
+                    <thead>
+                        <tr><th>State</th>
+                            {% for action in actions %}<th>{{ action }}</th>{% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in result.q_table %}
+                        <tr><td>{{ row.state }}</td>
+                            {% for value in row.action_values %}
+                            <td>{{ '%.2f'|format(value) }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

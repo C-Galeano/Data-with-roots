@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from models import gradient_boosting as gbc
 from models import linear_regression as linreg
 from models import logistic_regression as logreg
+from models import reinforcement as rl
 from models import unsupervised
 
 app = Flask(__name__)
@@ -201,6 +202,26 @@ def unsupervised_clustering():
     return render_template(
         "unsupervised/clustering.html",
         **unsupervised.clustering_context()
+    )
+
+
+# --- Reinforcement Learning: Q-Learning ---
+
+@app.route("/reinforcement", methods=["GET", "POST"])
+def reinforcement():
+    result = None
+
+    # Train only when the form sends a POST request.
+    if request.method == "POST":
+        result = rl.train(episodes=1000)
+
+    return render_template(
+        "reinforcement/application.html",
+        result=result,
+        grid=rl.GRID,
+        start=rl.START,
+        goal=rl.GOAL,
+        actions=rl.ACTION_NAMES
     )
 
 

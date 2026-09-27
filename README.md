@@ -33,7 +33,8 @@ data-with-roots/
 │   ├── linear_regression.py
 │   ├── logistic_regression.py
 │   ├── gradient_boosting.py
-│   └── unsupervised.py    # Loads the K-Means results for the Unsupervised pages
+│   ├── unsupervised.py    # Loads the K-Means results for the Unsupervised pages
+│   └── reinforcement.py   # Q-Learning with SGDRegressor on a 4x4 maze
 │
 ├── utils/                 # Helpers shared by the model modules
 │   ├── paths.py           # Absolute project paths (BASE_DIR, DATA_DIR)
@@ -68,7 +69,8 @@ data-with-roots/
 │   ├── regression/        # Supervised > Linear Regression: concepts, application
 │   ├── logistic_regression/  # Supervised > Logistic Regression: concepts, application, evaluation
 │   ├── gradient_boosting/    # Supervised > Gradient Boosting: concepts, application, evaluation
-│   └── unsupervised/      # Unsupervised: concepts, manual exercise, clustering
+│   ├── unsupervised/      # Unsupervised: concepts, manual exercise, clustering
+│   └── reinforcement/     # Reinforcement Learning: Q-Learning application
 │
 └── static/
     ├── css/style.css
@@ -125,6 +127,7 @@ To add a new section: put its data loading, training and plotting in a new file 
 | `/unsupervised/concepts`           | Unsupervised Machine Learning - Concepts |
 | `/unsupervised/manual-exercise`    | Unsupervised Machine Learning - Manual Exercise |
 | `/unsupervised/clustering`         | Unsupervised Machine Learning - Clustering Application |
+| `/reinforcement`                   | Reinforcement Learning - Q-Learning Application |
 
 ## Status
 
