@@ -1,0 +1,983 @@
+{% extends "base.html" %}
+
+{% block title %}Concepts - Reinforcement Learning{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <span class="badge bg-success-subtle text-success mb-3">
+            <i class="bi bi-robot me-1"></i> Reinforcement Learning
+        </span>
+
+        <h1 class="display-5 fw-bold">
+            Reinforcement Learning: Concepts
+        </h1>
+
+        <p class="lead text-muted mx-auto" style="max-width: 850px;">
+            Reinforcement Learning is a machine learning approach in which an
+            agent learns to make decisions by interacting with an environment,
+            receiving rewards or penalties and improving its behavior over time.
+        </p>
+    </div>
+
+
+    <!-- Project context -->
+    <div class="alert alert-primary shadow-sm mb-5" role="alert">
+        <h5 class="alert-heading">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Our Q-Learning exercise
+        </h5>
+
+        <p class="mb-0">
+            In our application, an agent starts at <strong>A</strong> and must
+            learn how to reach the target <strong>T</strong> on a
+            <strong>10 × 10 grid</strong>. The environment contains normal
+            cells, walls and danger cells. The agent learns through repeated
+            interaction with the environment using Q-Learning.
+        </p>
+    </div>
+
+
+    <!-- Environment summary -->
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <i class="bi bi-grid-3x3-gap-fill fs-1 text-primary"></i>
+                    <h5 class="mt-3">Environment</h5>
+                    <p class="mb-0">
+                        10 × 10 grid
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <i class="bi bi-bullseye fs-1 text-success"></i>
+                    <h5 class="mt-3">Goal</h5>
+                    <p class="mb-0">
+                        Reach <strong>T</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <i class="bi bi-arrow-left-right fs-1 text-warning"></i>
+                    <h5 class="mt-3">Actions</h5>
+                    <p class="mb-0">
+                        Up, Down, Left, Right
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <i class="bi bi-award-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Algorithm</h5>
+                    <p class="mb-0">
+                        Q-Learning
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Map -->
+    <section class="mb-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header">
+                <h3 class="h5 mb-0">
+                    <i class="bi bi-map me-2"></i>
+                    Our Environment
+                </h3>
+            </div>
+
+            <div class="card-body">
+
+                <p>
+                    The environment used in our exercise contains exactly
+                    <strong>100 cells</strong>.
+                    The distribution is:
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Meaning</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td><strong>A</strong></td>
+                                <td>Starting position</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td><strong>T</strong></td>
+                                <td>Target / goal</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td><strong>o</strong></td>
+                                <td>Normal path cell</td>
+                                <td>68</td>
+                            </tr>
+                            <tr>
+                                <td><strong>#</strong></td>
+                                <td>Wall</td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D</strong></td>
+                                <td>Danger cell</td>
+                                <td>10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Concepts accordion -->
+    <section class="mb-5">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header">
+                <h2 class="h4 mb-0">
+                    <i class="bi bi-book me-2"></i>
+                    Reinforcement Learning Concepts
+                </h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="accordion" id="rlConceptsAccordion">
+
+                    <!-- 1 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept1">
+                                1. Reinforcement Learning
+                            </button>
+                        </h2>
+
+                        <div id="concept1"
+                             class="accordion-collapse collapse show"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                <strong>Reinforcement Learning (RL)</strong>
+                                is a machine learning approach in which an agent
+                                learns through interaction with an environment.
+                                In our exercise, the agent learns how to move
+                                from <strong>A</strong> to <strong>T</strong>
+                                while maximizing its accumulated reward.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 2 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept2">
+                                2. Agent
+                            </button>
+                        </h2>
+
+                        <div id="concept2"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                The <strong>agent</strong> is the learner that
+                                makes decisions. In our exercise, the agent is
+                                the robot that decides whether to move Up,
+                                Down, Left or Right.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 3 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept3">
+                                3. Environment
+                            </button>
+                        </h2>
+
+                        <div id="concept3"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                The <strong>environment</strong> is the world
+                                in which the agent acts. Here, the environment
+                                is our 10 × 10 grid containing the start,
+                                target, normal cells, walls and danger cells.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 4 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept4">
+                                4. State
+                            </button>
+                        </h2>
+
+                        <div id="concept4"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                A <strong>state</strong> represents the
+                                current situation of the agent. In our grid,
+                                a state is represented by the current
+                                <strong>row and column</strong> of the agent.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 5 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept5">
+                                5. Action
+                            </button>
+                        </h2>
+
+                        <div id="concept5"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                An <strong>action</strong> is a decision made
+                                by the agent. The four possible actions in our
+                                environment are <strong>Up, Down, Left</strong>
+                                and <strong>Right</strong>.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 6 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept6">
+                                6. Reward
+                            </button>
+                        </h2>
+
+                        <div id="concept6"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                A <strong>reward</strong> is a numerical value
+                                returned by the environment after an action.
+                                Positive rewards encourage useful behavior,
+                                while negative rewards discourage undesirable
+                                behavior.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 7 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept7">
+                                7. Penalty
+                            </button>
+                        </h2>
+
+                        <div id="concept7"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                A <strong>penalty</strong> is a negative reward
+                                used to discourage an action or situation.
+                                In our environment, moving into danger or
+                                attempting an invalid movement produces a
+                                negative value.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 8 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept8">
+                                8. Policy
+                            </button>
+                        </h2>
+
+                        <div id="concept8"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                A <strong>policy</strong> is the strategy used
+                                by the agent to select an action for a given
+                                state. After training, the learned policy
+                                selects the action with the highest estimated
+                                Q-value.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 9 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept9">
+                                9. Step
+                            </button>
+                        </h2>
+
+                        <div id="concept9"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                A <strong>step</strong> is one interaction
+                                between the agent and the environment.
+                                For example, moving one cell to the right is
+                                one step.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 10 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept10">
+                                10. Episode
+                            </button>
+                        </h2>
+
+                        <div id="concept10"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                An <strong>episode</strong> is a complete
+                                sequence of interactions that starts at
+                                <strong>A</strong> and ends when the agent
+                                reaches <strong>T</strong> or when the maximum
+                                number of steps is reached.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 11 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept11">
+                                11. Experience
+                            </button>
+                        </h2>
+
+                        <div id="concept11"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                An <strong>experience</strong> is the
+                                information obtained from an interaction:
+                                current state, action, reward and next state.
+                                These transitions are used by the Q-Learning
+                                agent to improve its estimates.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 12 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept12">
+                                12. Exploration
+                            </button>
+                        </h2>
+
+                        <div id="concept12"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                <strong>Exploration</strong> means trying
+                                different actions to discover how the
+                                environment behaves. In our implementation,
+                                exploration is controlled by epsilon.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 13 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept13">
+                                13. Exploitation
+                            </button>
+                        </h2>
+
+                        <div id="concept13"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                <strong>Exploitation</strong> means selecting
+                                the action currently estimated as the best.
+                                In our implementation, the agent selects the
+                                action with the highest Q-value.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 14 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept14">
+                                14. Epsilon-Greedy
+                            </button>
+                        </h2>
+
+                        <div id="concept14"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                <strong>Epsilon-Greedy</strong> balances
+                                exploration and exploitation. At the beginning
+                                of training, epsilon is <strong>1.0</strong>,
+                                so exploration is frequent. It decreases until
+                                the minimum value of <strong>0.05</strong>.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 15 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept15">
+                                15. Immediate Reward
+                            </button>
+                        </h2>
+
+                        <div id="concept15"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                The <strong>immediate reward</strong> is the
+                                reward received directly after an action.
+                                For example, reaching the target produces
+                                <strong>+100</strong>, while entering a danger
+                                cell produces <strong>-15</strong>.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 16 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept16">
+                                16. Return
+                            </button>
+                        </h2>
+
+                        <div id="concept16"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                The <strong>return</strong> represents the
+                                accumulated rewards obtained from a sequence
+                                of actions. The agent tries to learn actions
+                                that lead to a higher future return.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 17 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept17">
+                                17. Gamma (γ)
+                            </button>
+                        </h2>
+
+                        <div id="concept17"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                <strong>Gamma (γ)</strong> is the discount
+                                factor that determines how much future rewards
+                                influence the current Q-value. Our
+                                implementation uses
+                                <strong>γ = 0.95</strong>.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 18 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept18">
+                                18. V(s)
+                            </button>
+                        </h2>
+
+                        <div id="concept18"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                <strong>V(s)</strong> represents the expected
+                                value of being in a particular state under a
+                                policy. In our exercise, the important idea is
+                                that some states are more valuable because they
+                                can lead to the target with better future
+                                rewards.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 19 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept19">
+                                19. Q(s,a)
+                            </button>
+                        </h2>
+
+                        <div id="concept19"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                <strong>Q(s,a)</strong> represents the expected
+                                value of taking action <strong>a</strong> in
+                                state <strong>s</strong>. Our application
+                                calculates Q-values for Up, Down, Left and
+                                Right.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 20 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#concept20">
+                                20. Q-Learning
+                            </button>
+                        </h2>
+
+                        <div id="concept20"
+                             class="accordion-collapse collapse"
+                             data-bs-parent="#rlConceptsAccordion">
+                            <div class="accordion-body">
+                                <strong>Q-Learning</strong> is the algorithm
+                                used in our application to learn the value of
+                                actions without being given the correct route.
+                                The model updates its Q-value using the received
+                                reward and the estimated future value.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Rewards -->
+    <section class="mb-5">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header">
+                <h2 class="h4 mb-0">
+                    <i class="bi bi-trophy me-2"></i>
+                    Reward System
+                </h2>
+            </div>
+
+            <div class="card-body">
+
+                <p>
+                    The environment assigns different rewards depending on
+                    what happens after an action.
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Situation</th>
+                                <th>Reward</th>
+                                <th>Effect on the agent</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Normal movement</td>
+                                <td><span class="badge bg-secondary">-1</span></td>
+                                <td>Encourages reaching the target efficiently.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Invalid movement / outside grid</td>
+                                <td><span class="badge bg-warning text-dark">-3</span></td>
+                                <td>Discourages leaving the environment.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Wall</td>
+                                <td><span class="badge bg-danger">-5</span></td>
+                                <td>Discourages attempting to cross walls.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Danger</td>
+                                <td><span class="badge bg-danger">-15</span></td>
+                                <td>Strongly discourages dangerous cells.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Goal</td>
+                                <td><span class="badge bg-success">+100</span></td>
+                                <td>Strongly encourages reaching T.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Parameters -->
+    <section class="mb-5">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header">
+                <h2 class="h4 mb-0">
+                    <i class="bi bi-sliders me-2"></i>
+                    Q-Learning Parameters
+                </h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Value</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Training episodes</td>
+                                <td><strong>300</strong></td>
+                                <td>Number of training episodes.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Gamma (γ)</td>
+                                <td><strong>0.95</strong></td>
+                                <td>Discount factor for future rewards.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Initial epsilon</td>
+                                <td><strong>1.0</strong></td>
+                                <td>Initial exploration level.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Minimum epsilon</td>
+                                <td><strong>0.05</strong></td>
+                                <td>Minimum exploration level.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Epsilon decay</td>
+                                <td><strong>0.98</strong></td>
+                                <td>Reduces exploration after each episode.</td>
+                            </tr>
+
+                            <tr>
+                                <td>Learning rate</td>
+                                <td><strong>0.1</strong></td>
+                                <td>Controls the size of each model update.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Q-Learning cycle -->
+    <section class="mb-5">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header">
+                <h2 class="h4 mb-0">
+                    <i class="bi bi-arrow-repeat me-2"></i>
+                    Q-Learning Learning Cycle
+                </h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3 text-center align-items-stretch">
+
+                    <div class="col-md-3">
+                        <div class="card h-100 border-primary">
+                            <div class="card-body">
+                                <i class="bi bi-geo-alt-fill fs-2 text-primary"></i>
+                                <h6 class="mt-2">1. Current State</h6>
+                                <p class="small mb-0">
+                                    The agent observes its current position.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card h-100 border-success">
+                            <div class="card-body">
+                                <i class="bi bi-lightning-fill fs-2 text-success"></i>
+                                <h6 class="mt-2">2. Select Action</h6>
+                                <p class="small mb-0">
+                                    Epsilon-Greedy chooses exploration or
+                                    exploitation.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card h-100 border-warning">
+                            <div class="card-body">
+                                <i class="bi bi-arrow-right-circle-fill fs-2 text-warning"></i>
+                                <h6 class="mt-2">3. Environment</h6>
+                                <p class="small mb-0">
+                                    The environment executes the action and
+                                    returns the next state.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card h-100 border-danger">
+                            <div class="card-body">
+                                <i class="bi bi-star-fill fs-2 text-danger"></i>
+                                <h6 class="mt-2">4. Reward</h6>
+                                <p class="small mb-0">
+                                    The agent receives a reward or penalty.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100 border-info">
+                            <div class="card-body">
+                                <i class="bi bi-calculator-fill fs-2 text-info"></i>
+                                <h6 class="mt-2">5. Update Q-value</h6>
+                                <p class="small mb-0">
+                                    Q(s,a) is updated using the reward and the
+                                    estimated future value.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100 border-secondary">
+                            <div class="card-body">
+                                <i class="bi bi-arrow-repeat fs-2 text-secondary"></i>
+                                <h6 class="mt-2">6. Next State</h6>
+                                <p class="small mb-0">
+                                    The new state becomes the current state for
+                                    the next decision.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100 border-dark">
+                            <div class="card-body">
+                                <i class="bi bi-flag-fill fs-2"></i>
+                                <h6 class="mt-2">7. Goal or End</h6>
+                                <p class="small mb-0">
+                                    The episode ends when T is reached or the
+                                    maximum number of steps is reached.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="alert alert-light border mt-4 text-center">
+                    <strong>Cycle:</strong>
+                    State → Action → Environment → Reward →
+                    Q-value Update → Next State → Action → ...
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Formula -->
+    <section class="mb-5">
+
+        <div class="alert alert-success shadow-sm">
+
+            <h4 class="alert-heading">
+                <i class="bi bi-calculator me-2"></i>
+                Q-Learning Update
+            </h4>
+
+            <p>
+                The implementation updates the value of the selected
+                state-action pair using the received reward and the estimated
+                future value:
+            </p>
+
+            <div class="text-center fs-5 my-3">
+                <strong>
+                    Q(s,a) ← Q(s,a) + α [r + γ max Q(s',a') − Q(s,a)]
+                </strong>
+            </div>
+
+            <p class="mb-0">
+                In our implementation, the model uses
+                <strong>SGDRegressor</strong> and
+                <strong>partial_fit()</strong> to incrementally update the
+                learned Q-values.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Final summary -->
+    <div class="alert alert-primary shadow-sm">
+        <h4 class="alert-heading">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            How our agent learns
+        </h4>
+
+        <p class="mb-0">
+            The agent starts without knowing the best route. Through
+            <strong>300 training episodes</strong>, it explores the grid,
+            receives rewards and penalties, updates its Q-values and gradually
+            improves its policy. During final evaluation, exploration is
+            disabled and the learned policy is used to select the best action
+            at each state.
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

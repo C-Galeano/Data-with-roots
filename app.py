@@ -3,7 +3,9 @@ from flask import Flask, render_template, request
 from models import gradient_boosting as gbc
 from models import linear_regression as linreg
 from models import logistic_regression as logreg
+from models import reinforcement
 from models import unsupervised
+from models.environment import LAYOUT, REWARD_TABLE
 
 app = Flask(__name__)
 
@@ -201,6 +203,30 @@ def unsupervised_clustering():
     return render_template(
         "unsupervised/clustering.html",
         **unsupervised.clustering_context()
+    )
+
+
+# --- Reinforcement Learning ---
+
+@app.route("/reinforcement/concepts")
+def reinforcement_concepts():
+    return render_template("reinforcement/concepts.html")
+
+
+@app.route("/reinforcement/application", methods=["GET", "POST"])
+def reinforcement_application():
+    result = None
+
+    # Training takes about 30 s, so it only runs when the button is pressed.
+    if request.method == "POST":
+        result = reinforcement.train()
+
+    return render_template(
+        "reinforcement/application.html",
+        result=result,
+        layout=[row.split() for row in LAYOUT],
+        reward_table=REWARD_TABLE,
+        parameters=reinforcement.PARAMETERS
     )
 
 

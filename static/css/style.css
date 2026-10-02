@@ -148,3 +148,95 @@ a:hover {
     background-color: var(--dwr-blue-dark);
     color: rgba(255, 255, 255, 0.75);
 }
+
+/* --- Reinforcement Learning grid ----------------------------------------- */
+
+.rl-grid {
+    border-collapse: separate;
+    border-spacing: 3px;
+}
+
+.rl-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-family: Consolas, "Courier New", monospace;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.rl-grid td.rl-cell {
+    display: table-cell;
+}
+
+.rl-cell-A {
+    background-color: var(--dwr-blue);
+    color: #fff;
+}
+
+.rl-cell-T {
+    background-color: var(--dwr-green);
+    color: #fff;
+}
+
+.rl-cell-o {
+    background-color: #fff;
+    color: #9aa59f;
+    border: 1px solid #dfe5e0;
+}
+
+.rl-cell-wall {
+    background-color: #3d3d3d;
+    color: #bdbdbd;
+}
+
+.rl-cell-D {
+    background-color: #f8d7da;
+    color: #b02a37;
+    border: 1px solid #f1aeb5;
+}
+
+/* Cells the learned route goes through. */
+.rl-cell.rl-on-path {
+    box-shadow: inset 0 0 0 3px #f4a261;
+}
+
+.rl-cell-o.rl-on-path {
+    background-color: #ffe8cc;
+    color: var(--dwr-blue-dark);
+}
+
+.rl-legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+}
+
+.rl-legend .rl-cell {
+    flex-shrink: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: 0.85rem;
+}
+
+.rl-scroll {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+@media (max-width: 576px) {
+    .rl-cell {
+        width: 1.7rem;
+        height: 1.7rem;
+        font-size: 0.8rem;
+    }
+
+    .rl-grid {
+        border-spacing: 2px;
+    }
+}

@@ -14,7 +14,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark dwr-navbar sticky-top">
+    <nav class="navbar navbar-expand-xl navbar-dark dwr-navbar sticky-top">
         <div class="container">
             <a class="navbar-brand dwr-brand" href="{{ url_for('home') }}">
                 <i class="bi bi-tree-fill me-2"></i>Data with Roots
@@ -87,6 +87,18 @@
                             <li><a class="dropdown-item" href="{{ url_for('unsupervised_concepts') }}">Concepts</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('unsupervised_manual') }}">Manual Exercise</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('unsupervised_clustering') }}">Clustering Application</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Reinforcement Learning
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><h6 class="dropdown-header">Q-Learning</h6></li>
+                            <li><a class="dropdown-item" href="{{ url_for('reinforcement_concepts') }}">Concepts</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('reinforcement_application') }}">Application</a></li>
                         </ul>
                     </li>
                 </ul>
