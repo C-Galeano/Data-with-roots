@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block title %}Q-Learning - Reinforcement Learning{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- TITLE -->
+    <div class="text-center mb-5">
+        <span class="badge rounded-pill dwr-section-badge mb-3">
+            Reinforcement Learning
+        </span>
+
+        <h1 class="fw-bold">
+            Q-Learning: Reach the Target
+        </h1>
+
+        <p class="lead text-muted">
+            A virtual robot learns to cross a 10×10 maze by trial and error, using
+            <strong>SGDRegressor</strong> to estimate the value of each move.
+        </p>
+    </div>
+
+
+    <!-- 1. ENVIRONMENT -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-4">
+                1. Environment
+            </h2>
+
+            <div class="row g-4 align-items-center">
+
+                <div class="col-lg-6 d-flex justify-content-center">
+                    <!-- One table cell for each grid position. -->
+                    <table class="rl-grid" aria-label="Environment map">
+                        {% for row in layout %}
+                        <tr>
+                            {% for symbol in row %}
+                            <td class="rl-cell rl-cell-{{ symbol if symbol != '#' else 'wall' }}">{{ symbol }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div class="col-lg-6">
+                    <ul class="list-unstyled rl-legend mb-3">
+                        <li><span class="rl-cell rl-cell-A">A</span> Start: the robot begins every episode here.</li>
+                        <li><span class="rl-cell rl-cell-T">T</span> Target: reaching it ends the episode.</li>
+                        <li><span class="rl-cell rl-cell-o">o</span> Path: free cell the robot can walk on.</li>
+                        <li><span class="rl-cell rl-cell-wall">#</span> Wall: blocks the move, the robot stays in place.</li>
+                        <li><span class="rl-cell rl-cell-D">D</span> Danger zone: can be crossed, but it is heavily penalized.</li>
+                    </ul>
+                    <p class="mb-2">
+                        <strong>State:</strong> the robot's position (row, column).
+                    </p>
+                    <p class="mb-0">
+                        <strong>Actions:</strong> Up, Down, Left, Right.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 2. REWARDS AND PARAMETERS -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                2. Rewards and Parameters
+            </h2>
+
+            <h3 class="h5 fw-bold mt-4">Reward system</h3>
+            <div class="table-responsive">
+                <table class="table table-sm table-striped align-middle">
+                    <thead>
+                        <tr><th>Event</th><th class="text-end">Reward</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for item in reward_table %}
+                        <tr>
+                            <td>{{ item.event }}</td>
+                            <td class="text-end fw-semibold">{{ '%+d'|format(item.reward) }}</td>
+                            <td class="text-muted">{{ item.reason }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="h5 fw-bold mt-4">Training parameters</h3>
+            <div class="table-responsive">
+                <table class="table table-sm table-striped align-middle">
+                    <thead>
+                        <tr><th>Parameter</th><th>Symbol</th><th class="text-end">Value</th><th>Why</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for item in parameters %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td><code>{{ item.symbol }}</code></td>
+                            <td class="text-end fw-semibold">{{ item.value }}</td>
+                            <td class="text-muted">{{ item.reason }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="mb-0">
+                After every move the agent builds the target
+                <code>reward + γ · max Q(s′, a′)</code> and updates the model
+                with <code>partial_fit()</code>.
+            </p>
+
+        </div>
+    </div>
+
+
+    <!-- 3. TRAINING -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                3. Training
+            </h2>
+
+            <p class="text-muted">
+                Training takes about 30 seconds. Please wait until the results appear.
+            </p>
+
+            <!-- Submit the training request to the Flask route. -->
+            <form method="post" action="{{ url_for('reinforcement_application') }}" id="rl-train-form">
+                <button type="submit" class="btn dwr-btn-primary" id="rl-train-button">
+                    <span class="spinner-border spinner-border-sm me-1 d-none" role="status" aria-hidden="true" id="rl-spinner"></span>
+                    <i class="bi bi-play-fill me-1" id="rl-play-icon"></i>
+                    <span id="rl-train-label">Train Agent</span>
+                </button>
+            </form>
+
+            {% if result %}
+            <div class="row g-3 mt-2">
+                {% for label, value in [
+                    ("Episodes", result.episodes),
+                    ("Successful episodes", result.successes),
+                    ("Success rate", result.success_rate ~ " %"),
+                    ("Average reward", result.average_reward),
+                    ("Final ε", result.final_epsilon)
+                ] %}
+                <div class="col-6 col-md">
+                    <div class="border rounded p-3 h-100 text-center bg-white">
+                        <p class="text-muted small mb-1">{{ label }}</p>
+                        <p class="fs-4 fw-bold mb-0">{{ value }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+
+    {% if result %}
+    {% set evaluation = result.evaluation %}
+
+    <!-- 4. LEARNED ROUTE -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                4. Learned Route (no exploration)
+            </h2>
+
+            {% if evaluation.reached_goal %}
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle-fill me-1"></i>
+                The agent reached the target in <strong>{{ evaluation.moves }}</strong> moves.
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                The agent did not reach the target within {{ evaluation.moves }} moves.
+            </div>
+            {% endif %}
+
+            <div class="row g-4 align-items-center">
+
+                <div class="col-lg-6 d-flex justify-content-center">
+                    <table class="rl-grid" aria-label="Learned route">
+                        {% for row in result.grid %}
+                        <tr>
+                            {% for cell in row %}
+                            <td class="rl-cell rl-cell-{{ cell.symbol if cell.symbol != '#' else 'wall' }}{% if cell.on_path %} rl-on-path{% endif %}">{{ cell.symbol }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="border rounded p-3 text-center bg-white">
+                                <p class="text-muted small mb-1">Moves</p>
+                                <p class="fs-4 fw-bold mb-0">{{ evaluation.moves }}</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="border rounded p-3 text-center bg-white">
+                                <p class="text-muted small mb-1">Total reward</p>
+                                <p class="fs-4 fw-bold mb-0">{{ evaluation.total_reward }}</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="border rounded p-3 text-center bg-white">
+                                <p class="text-muted small mb-1">Reached the target</p>
+                                <p class="fs-4 fw-bold mb-0">{{ "Yes" if evaluation.reached_goal else "No" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="border rounded p-3 text-center bg-white">
+                                <p class="text-muted small mb-1">Danger cells crossed</p>
+                                <p class="fs-4 fw-bold mb-0">{{ evaluation.danger_cells }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mt-3 mb-0">
+                        Highlighted cells show the route the agent follows when it
+                        always picks the action with the highest Q-value.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Each evaluation step in a table row. -->
+            <h3 class="h5 fw-bold mt-4">Step by step</h3>
+            <div class="table-responsive rl-scroll">
+                <table class="table table-sm table-striped align-middle">
+                    <thead>
+                        <tr><th>Step</th><th>State</th><th>Action</th>
+                            <th>Next State</th><th>Cell Type</th><th class="text-end">Reward</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for step in evaluation.steps %}
+                        <tr>
+                            <td>{{ step.step }}</td>
+                            <td>{{ step.state }}</td>
+                            <td>{{ step.action_name }}</td>
+                            <td>{{ step.next_state }}</td>
+                            <td>{{ step.cell_type }}</td>
+                            <td class="text-end">{{ step.reward }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 5. Q-TABLE -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h2 class="fw-bold mb-3">
+                5. Learned Q-Values
+            </h2>
+
+            <p class="text-muted">
+                Predictions of the model for each cell the robot can stand on.
+                The best action in each state is the one with the highest value.
+            </p>
+
+            <!-- Four action values for each state. -->
+            <div class="table-responsive rl-scroll">
+                <table class="table table-sm table-striped align-middle">
+                    <thead>
+                        <tr><th>State</th><th>Cell</th>
+                            {% for action in result.action_names %}<th class="text-end">{{ action }}</th>{% endfor %}
+                            <th>Best</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in result.q_table %}
+                        <tr>
+                            <td>{{ row.state }}</td>
+                            <td>{{ row.cell }}</td>
+                            {% for value in row["values"] %}
+                            <td class="text-end">{{ '%.2f'|format(value) }}</td>
+                            {% endfor %}
+                            <td class="fw-semibold">{{ row.best_action }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+    // Show a spinner while the server trains the agent.
+    document.getElementById("rl-train-form").addEventListener("submit", () => {
+        const button = document.getElementById("rl-train-button");
+        button.disabled = true;
+        document.getElementById("rl-spinner").classList.remove("d-none");
+        document.getElementById("rl-play-icon").classList.add("d-none");
+        document.getElementById("rl-train-label").textContent = "Training... (about 30 s)";
+    });
+</script>
+
+{% endblock %}
